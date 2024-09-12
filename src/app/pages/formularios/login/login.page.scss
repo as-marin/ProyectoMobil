@@ -1,0 +1,12 @@
+.center-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    padding: 16px; 
+  }
+  
+  ion-card {
+    width: 100%;
+    max-width: 500px; 
+  }
