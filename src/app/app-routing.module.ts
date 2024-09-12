@@ -11,10 +11,16 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+<<<<<<< HEAD
 
   {
     path: 'login',
     loadChildren: () => import('./pages/formularios/login/login.module').then( m => m.LoginPageModule)
+=======
+  {
+    path: 'registro',
+    loadChildren: () => import('./pages/formularios/registro/registro.module').then(m => m.RegistroPageModule)
+>>>>>>> 21a3cc61febc3c0bbf73ee98aa737d2185d40868
   },
 
 ];
