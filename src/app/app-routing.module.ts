@@ -19,7 +19,11 @@ const routes: Routes = [
   {
     path: 'registro',
     loadChildren: () => import('./pages/formularios/registro/registro.module').then(m => m.RegistroPageModule)
+  },  {
+    path: 'bienvenida',
+    loadChildren: () => import('./pages/welcomes/bienvenida/bienvenida.module').then( m => m.BienvenidaPageModule)
   },
+
 
 ];
 

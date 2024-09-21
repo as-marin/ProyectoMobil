@@ -1,0 +1,39 @@
+#container {
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ion-color-primary);
+}
+
+#edit-button {
+    color: var(--ion-color-primary);
+}
+
+.welcome-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Centra horizontalmente */
+    justify-content: center;
+    /* Centra verticalmente */
+    height: 88vh;
+    /* Altura completa para cubrir la pantalla */
+    text-align: center;
+    /* Centra el texto */
+    color: #ffd700;
+    /* Color del texto */
+}
+
+.welcome-title {
+    font-size: 55px;
+    /* Tamaño de letra grande */
+    font-weight: bold;
+    /* Negrita */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    /* Sombra para darle profundidad */
+    margin-bottom: 10px;
+    /* Espaciado inferior */
+}
