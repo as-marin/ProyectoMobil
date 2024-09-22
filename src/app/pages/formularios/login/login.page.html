@@ -1,26 +1,47 @@
 <ion-content >
   <ion-header collapse="condense">
-
+<ion-toolbar>
+  <ion-buttons slot="start">
+    <ion-button (click)="goBack()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
   </ion-header>
   <ion-content color="light">
     <div class="center-container">
       <ion-card>
         <ion-card-header>
-          <ion-card-title>Iniciar Sesion</ion-card-title>
+          <ion-card-title>Iniciar Sesión</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <ion-list inset>
-            <ion-item>
-              <ion-input labelPlacement="floating" value="">
-                <div slot="label">Email</div>
-              </ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-input labelPlacement="floating" value="">
-                <div slot="label">Contraseña</div>
-              </ion-input>
-            </ion-item>
-          </ion-list>
+          <form #formularioLogin="ngForm" (ngSubmit)="onSubmit()">
+            <ion-list inset>
+              <ion-item>
+                <ion-input
+                  labelPlacement="floating"
+                  name="email"
+                  type="email"
+                  required
+                  [(ngModel)]="loginData.email">
+                  <div slot="label">Email</div>
+                </ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-input
+                  labelPlacement="floating"
+                  name="password"
+                  type="password"
+                  required
+                  [(ngModel)]="loginData.password">
+                  <div slot="label">Contraseña</div>
+                </ion-input>
+              </ion-item>
+            </ion-list>
+            <ion-button routerLink="/menu" expand="block" type="submit" [disabled]="formularioLogin.valid">
+              Iniciar Sesión
+            </ion-button>
+          </form>
         </ion-card-content>
       </ion-card>
     </div>
