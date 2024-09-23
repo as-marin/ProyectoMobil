@@ -9,7 +9,9 @@
 }
 
 #edit-button {
-    color: var(--ion-color-primary);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    color: var(--ion-color-light);
 }
 
 .welcome-container {
@@ -23,17 +25,12 @@
     /* Altura completa para cubrir la pantalla */
     text-align: center;
     /* Centra el texto */
-    color: #ffd700;
-    /* Color del texto */
 }
 
 .welcome-title {
-    font-size: 55px;
-    /* Tamaño de letra grande */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 40px;
     font-weight: bold;
-    /* Negrita */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    /* Sombra para darle profundidad */
     margin-bottom: 10px;
-    /* Espaciado inferior */
 }
