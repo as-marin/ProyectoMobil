@@ -8,7 +8,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'bienvenida',
     pathMatch: 'full'
   },
 
@@ -19,10 +19,24 @@ const routes: Routes = [
   {
     path: 'registro',
     loadChildren: () => import('./pages/formularios/registro/registro.module').then(m => m.RegistroPageModule)
-  },  {
+  },
+  {
     path: 'bienvenida',
     loadChildren: () => import('./pages/welcomes/bienvenida/bienvenida.module').then( m => m.BienvenidaPageModule)
   },
+  {
+    path: 'menu',
+    loadChildren: () => import('./pages/inicio/menu/menu.module').then( m => m.MenuPageModule)
+  },  {
+    path: 'elegir',
+    loadChildren: () => import('./pages/formularios/elegir/elegir.module').then( m => m.ElegirPageModule)
+  },
+  {
+    path: 'perfil',
+    loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule)
+  },
+
+
 
 
 ];

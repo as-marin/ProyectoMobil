@@ -2,21 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-registro',
-  templateUrl: './registro.page.html',
-  styleUrls: ['./registro.page.scss'],
+  selector: 'app-perfil',
+  templateUrl: './perfil.page.html',
+  styleUrls: ['./perfil.page.scss'],
 })
-export class RegistroPage implements OnInit {
+export class PerfilPage implements OnInit {
 
   constructor(private navCtrl: NavController) { }
 
   ngOnInit() {
   }
-
-  onSubmit(){
-    console.log('hello');
-  }
-
+  
   goBack() {
     this.navCtrl.back();
   }

@@ -1,0 +1,30 @@
+.center-buttons {
+    display: flex;
+    justify-content: center;   
+    align-items: center;       
+    flex-direction: column;   
+    height: 70vh;             
+  }
+  
+  .center-buttons ion-button {
+    width: 100%;               
+    max-width: 500px;          
+  }
+  
+
+  .welcome-text {
+    text-align: center;
+    margin-bottom: 40px;
+    margin-top: 20px
+  }
+  
+  .welcome-text h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .welcome-text p {
+    font-size: 1.2rem;
+    color: #666;
+  }
