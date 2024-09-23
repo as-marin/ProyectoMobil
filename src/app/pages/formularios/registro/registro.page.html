@@ -6,40 +6,44 @@
         Volver
       </ion-button>
     </ion-buttons>
-    <ion-title>Registro</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-
-  <ion-list class="form-container">
+<ion-content class="ion-padding">
+  <ion-list [inset]="true" lines="inset" mode="ios">
+    <ion-list-header mode="ios" color="primary">
+      <ion-label class="ion-text-center">Menú</ion-label>
+    </ion-list-header>
     <form #formularioRegistro="ngForm" (ngSubmit)="onSubmit()">
+      <div>
+        <ion-item>
+        <ion-input label="Correo" type="email" required labelPlacement="floating"
+            placeholder="Ingrese Correo"></ion-input>
+          <ion-icon slot="start" name="mail-outline"></ion-icon>
+        </ion-item>
+      </div>
+      <div>
       <ion-item>
-        <ion-input label="Correo" type="email" required labelPlacement="floating" placeholder="Ingrese Correo"></ion-input>
-        <ion-icon slot="start" name="mail-outline"></ion-icon>
-      </ion-item>
-
+        <ion-input label="Nombre" type="text" required labelPlacement="floating"
+            placeholder="Ingrese Nobre"></ion-input>
+          <ion-icon slot="start" name="person-outline"></ion-icon>
+        </ion-item>
+      </div>
+      <div>
       <ion-item>
-        <ion-input label="Nombre" type="text" required labelPlacement="floating" placeholder="Ingrese Nobre"></ion-input>
-        <ion-icon slot="start" name="person-outline"></ion-icon>
-      </ion-item>
-
+        <ion-input label="Apellido" type="text" required labelPlacement="floating"
+            placeholder="Ingrese Apellido"></ion-input>
+          <ion-icon slot="start" name="text-outline"></ion-icon>
+        </ion-item>
+      </div>
+      <div>
       <ion-item>
-        <ion-input label="Apellido" type="text" required labelPlacement="floating" placeholder="Ingrese Apellido"></ion-input>
-        <ion-icon slot="start" name="person-outline"></ion-icon>
-      </ion-item>
-
-      <ion-item>
-        <ion-input label="Contraseña" type="password" required labelPlacement="floating" placeholder="Ingrese Contraseña"></ion-input>
-        <ion-icon slot="start" name="lock-closed-outline"></ion-icon>
-      </ion-item>
-
-      <ion-button
-        expand="block"
-        shape="round"
-        color="primary"
-        type="submit"
-        [disabled]="formularioRegistro.invalid">
+        <ion-input label="Contraseña" type="password" required labelPlacement="floating"
+            placeholder="Ingrese Contraseña"></ion-input>
+          <ion-icon slot="start" name="lock-closed-outline"></ion-icon>
+        </ion-item>
+      </div>
+      <ion-button expand="block" shape="round" type="submit" [disabled]="formularioRegistro.invalid">
         Crear Cuenta
       </ion-button>
     </form>
