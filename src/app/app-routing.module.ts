@@ -27,7 +27,8 @@ const routes: Routes = [
   {
     path: 'menu',
     loadChildren: () => import('./pages/inicio/menu/menu.module').then( m => m.MenuPageModule)
-  },  {
+  },
+  {
     path: 'elegir',
     loadChildren: () => import('./pages/formularios/elegir/elegir.module').then( m => m.ElegirPageModule)
   },
