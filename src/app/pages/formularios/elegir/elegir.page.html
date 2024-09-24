@@ -1,22 +1,22 @@
-  <ion-header [translucent]="true">
-
-  </ion-header>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 
   <ion-content [fullscreen]="true">
-    <ion-header collapse="condense">
-    </ion-header>
+    <ion-card>
+      <ion-icon class="ion-padding" name="newspaper-outline"></ion-icon>
+      <ion-card-header class="welcome-text">
+        <ion-card-subtitle>Comencemos</ion-card-subtitle>
+        <ion-card-title>Accede o Registrate en la aplicacion de asistencia</ion-card-title>
+      </ion-card-header>
 
-    <div class="welcome-text">
-      <h1>Bienvenido</h1>
-      <p>Accede o crea una cuenta para comenzar</p>
-    </div>
-
-    
-
-    <div class="center-buttons">
-      <ion-button expand="block" routerLink="/login">Iniciar Sesion</ion-button>
-      <ion-button expand="block" routerLink="/registro">Registrarse</ion-button>
-    </div>
-    
-
+      <div class="center-buttons">
+        <ion-button expand="block" shape="round" color="secondary" routerLink="/login">Iniciar Sesion</ion-button>
+        <ion-button expand="block" shape="round" color="secondary" routerLink="/registro">Registrarse</ion-button>
+      </div>
+    </ion-card>
   </ion-content>
