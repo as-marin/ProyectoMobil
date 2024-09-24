@@ -1,19 +1,22 @@
-<ion-content >
+<ion-content>
   <ion-header collapse="condense">
-<ion-toolbar>
-  <ion-buttons slot="start">
-    <ion-button (click)="goBack()">
-      <ion-icon name="arrow-back"></ion-icon>
-    </ion-button>
-  </ion-buttons>
-</ion-toolbar>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="goBack()">
+          <ion-icon name="arrow-back"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
   </ion-header>
   <ion-content color="light">
     <div class="center-container">
       <ion-card>
-        <ion-card-header>
-          <ion-card-title>Iniciar Sesión</ion-card-title>
-        </ion-card-header>
+        <div id="head-card-login" class="ion-padding center-content">
+          <ion-icon id="icon-login" name="person-circle-outline"></ion-icon>
+          <ion-card-header>
+            <ion-card-title>Iniciar Sesión</ion-card-title>
+          </ion-card-header>
+        </div>
         <ion-card-content>
           <form #formularioLogin="ngForm" (ngSubmit)="onSubmit()">
             <ion-list inset>
@@ -23,7 +26,8 @@
                   name="email"
                   type="email"
                   required
-                  [(ngModel)]="loginData.email">
+                  [(ngModel)]="loginData.email"
+                >
                   <div slot="label">Email</div>
                 </ion-input>
               </ion-item>
@@ -33,13 +37,25 @@
                   name="password"
                   type="password"
                   required
-                  [(ngModel)]="loginData.password">
+                  [(ngModel)]="loginData.password"
+                >
                   <div slot="label">Contraseña</div>
                 </ion-input>
               </ion-item>
             </ion-list>
-            <ion-button routerLink="/menu" expand="block" type="submit" [disabled]="formularioLogin.valid">
+            <ion-button
+              routerLink="/menu"
+              expand="block"
+              type="submit"
+              [disabled]="formularioLogin.valid"
+            >
               Iniciar Sesión
+            </ion-button>
+            <ion-button type="link" expand="block" fill="clear" shape="round">
+              ¿Olvidaste tu contraseña?
+            </ion-button>
+            <ion-button type="link" expand="block" fill="clear" shape="round">
+              ¿No tienes cuenta? Regístrate
             </ion-button>
           </form>
         </ion-card-content>
