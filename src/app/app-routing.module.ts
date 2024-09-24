@@ -39,7 +39,11 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () => import('./pages/perfiles/admin/admin.module').then( m => m.AdminPageModule)
+  },  {
+    path: 'inicio',
+    loadChildren: () => import('./pages/menus/inicio/inicio.module').then( m => m.InicioPageModule)
   },
+
 
 
 
