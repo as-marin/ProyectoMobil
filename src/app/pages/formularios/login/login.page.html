@@ -11,6 +11,11 @@
   <ion-content color="light">
     <div class="center-container">
       <ion-card>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-back-button default-href="#"></ion-back-button>
+          </ion-buttons>
+        </ion-toolbar>
         <div id="head-card-login" class="ion-padding center-content">
           <ion-icon id="icon-login" name="person-circle-outline"></ion-icon>
           <ion-card-header>
@@ -54,7 +59,7 @@
             <ion-button type="link" expand="block" fill="clear" shape="round">
               ¿Olvidaste tu contraseña?
             </ion-button>
-            <ion-button type="link" expand="block" fill="clear" shape="round">
+            <ion-button type="link" routerLink="/registro" expand="block" fill="clear" shape="round">
               ¿No tienes cuenta? Regístrate
             </ion-button>
           </form>
