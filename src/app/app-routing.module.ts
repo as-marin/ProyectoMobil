@@ -43,6 +43,10 @@ const routes: Routes = [
     path: 'config',
     loadChildren: () => import('./pages/menus/config/config.module').then( m => m.ConfigPageModule)
   },
+  {
+    path: 'tests-not-found',
+    loadChildren: () => import('./pages/tests-not-found/tests-not-found.module').then( m => m.TestsNotFoundPageModule)
+  },
 
 
 
