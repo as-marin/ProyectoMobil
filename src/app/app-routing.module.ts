@@ -33,9 +33,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/formularios/elegir/elegir.module').then( m => m.ElegirPageModule)
   },
   {
-    path: 'perfil',
-    loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule)
+    path: 'user',
+    loadChildren: () => import('./pages/perfiles/user/user.module').then( m => m.UserPageModule)
   },
+  {
+    path: 'admin',
+    loadChildren: () => import('./pages/perfiles/admin/admin.module').then( m => m.AdminPageModule)
+  },
+
 
 
 
