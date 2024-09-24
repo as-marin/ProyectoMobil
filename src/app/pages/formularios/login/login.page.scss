@@ -10,3 +10,20 @@
     width: 100%;
     max-width: 500px; 
   }
+  .center-content {
+    display: flex;
+    flex-direction: column; /* Organiza los elementos en columna */
+    justify-content: center; /* Centra verticalmente */
+    align-items: center; /* Centra horizontalmente */
+  }
+  
+  #head-card-login {
+    font-size: 75px;
+    color: #3880ff;
+  }
+  
+  #icon-login {
+    font-size: 100px; /* Tamaño del ícono */
+    color: #3880ff;
+  }
+  
