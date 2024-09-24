@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { last } from 'rxjs';
 
 @Component({
   selector: 'app-registro',
@@ -7,7 +8,13 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./registro.page.scss'],
 })
 export class RegistroPage implements OnInit {
-
+  loginData = {
+    name: '',
+    lastname: '',
+    email: '',
+    password: '',
+    password2: ''
+  };
   constructor(private navCtrl: NavController) { }
 
   ngOnInit() {
