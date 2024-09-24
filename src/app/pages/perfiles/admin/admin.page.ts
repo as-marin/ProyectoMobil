@@ -7,6 +7,10 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./admin.page.scss'],
 })
 export class AdminPage implements OnInit {
+  users = [
+    { name: 'John Doe', email: 'john.doe@example.com', avatar: 'assets/img/john-doe.png' },
+    { name: 'Jane Smith', email: 'jane.smith@example.com', avatar: 'assets/img/jane-smith.png' },
+  ];
 
   constructor(private navCtrl: NavController) { }
 
@@ -15,5 +19,9 @@ export class AdminPage implements OnInit {
 
   goBack() {
     this.navCtrl.back();
+  }
+
+  viewUserDetails(user: any) {
+    console.log('User details:', user);
   }
 }
