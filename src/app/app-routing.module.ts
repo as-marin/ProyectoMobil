@@ -34,7 +34,11 @@ const routes: Routes = [
   },
   {
     path: 'perfil',
-    loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule)
+    loadChildren: () => import('./pages/inicio/perfil/perfil.module').then( m => m.PerfilPageModule)
+  },
+  {
+    path: 'scanner',
+    loadChildren: () => import('./pages/inicio/scanner/scanner.module').then( m => m.ScannerPageModule)
   },
 
 
