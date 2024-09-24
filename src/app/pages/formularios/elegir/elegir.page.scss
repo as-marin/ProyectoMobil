@@ -3,28 +3,38 @@
     justify-content: center;   
     align-items: center;       
     flex-direction: column;   
-    height: 70vh;             
+    height: 50vh;             
   }
   
   .center-buttons ion-button {
     width: 100%;               
-    max-width: 500px;          
+    max-width: 300px;          
   }
   
+  ion-icon{
+    display: block;
+    margin: 0 auto;
+    font-size: 100px; 
+    color: #3880ff;
+  }
 
-  .welcome-text {
+  ion-card-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centra verticalmente */
     text-align: center;
-    margin-bottom: 40px;
-    margin-top: 20px
+    font-weight: bold;
+    height: auto;
   }
   
-  .welcome-text h1 {
-    font-size: 2rem;
+  ion-card-subtitle {
+    font-size: 3rem;
     font-weight: bold;
     margin: 0;
   }
   
-  .welcome-text p {
-    font-size: 1.2rem;
+  ion-card-title {
+    font-size: 1.1rem;
     color: #666;
   }
+  
