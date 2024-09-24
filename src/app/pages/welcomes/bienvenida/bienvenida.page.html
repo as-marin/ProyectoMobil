@@ -1,8 +1,13 @@
+<ion-header>
+    <ion-img src="assets/img/Logo-duoc-simple.jpg"></ion-img>
+</ion-header>
 <ion-content class="ion-padding background-image" [fullscreen]="true">
   <div class="welcome-container">
-    <ion-img src="assets/img/Logo-duoc-simple.jpg"></ion-img>
-    <ion-title class="welcome-title">BIENVENIDO(A)</ion-title>
-    <p class="welcome-subtitle" >A tu aplicación de asistencia virtual</p>
+    <div class="ion-padding">
+    <ion-icon id="icon-bienvenida" slot="start" name="school-outline" color="primary"></ion-icon>
+    </div>
+    <ion-title class="welcome-title ion-padding" color="secondary">BIENVENIDO(A)</ion-title>
+    <p class="welcome-subtitle ion-padding" >A tu aplicación de asistencia virtual</p>
   </div>
 </ion-content>
 
@@ -10,7 +15,7 @@
   <ion-toolbar>
     <ion-item routerLink="/elegir">
       <ion-icon
-        color="primary"
+        color="light"
         slot="end"
         name="arrow-forward-outline"
       ></ion-icon>
