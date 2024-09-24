@@ -25,10 +25,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/welcomes/bienvenida/bienvenida.module').then( m => m.BienvenidaPageModule)
   },
   {
-    path: 'menu',
-    loadChildren: () => import('./pages/inicio/menu/menu.module').then( m => m.MenuPageModule)
-  },
-  {
     path: 'elegir',
     loadChildren: () => import('./pages/formularios/elegir/elegir.module').then( m => m.ElegirPageModule)
   },
@@ -39,10 +35,15 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () => import('./pages/perfiles/admin/admin.module').then( m => m.AdminPageModule)
-  },  {
+  },
+  {
     path: 'inicio',
     loadChildren: () => import('./pages/menus/inicio/inicio.module').then( m => m.InicioPageModule)
+  },  {
+    path: 'config',
+    loadChildren: () => import('./pages/menus/config/config.module').then( m => m.ConfigPageModule)
   },
+
 
 
 
