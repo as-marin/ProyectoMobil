@@ -38,25 +38,25 @@
     </ion-card-content>
   </ion-card>
   <ion-buttons class="ion-margin">
-    <ion-button>
-      <ion-icon color="success" slot="start" name="add"></ion-icon>
-      Agregar a nuevo alumno
+    <ion-button routerLink="/registro">
+      <ion-icon  color="success" slot="start" name="add"></ion-icon>
+      Agregar nuevo alumno
     </ion-button>
   </ion-buttons>
   <ion-list>
     <ion-item *ngFor="let user of users" class="user-item">
       <ion-avatar slot="start">
-        <img [src]="user.avatar || 'assets/img/default-avatar.png'" alt="Avatar" />
+        <img src="https://www.gravatar.com/avatar?d=identicon">
       </ion-avatar>
       <ion-label>
         <h2>{{ user.name }}</h2>
         <p>{{ user.email }}</p>
       </ion-label>
       <ion-button slot="end" (click)="viewUserDetails(user)">
-        <ion-icon slot="icon-only" name="eye-outline"></ion-icon>
+        <ion-icon slot="icon-only" name="eye-outline" color="light"></ion-icon>
       </ion-button>
       <ion-button slot="end" color="danger" (click)="viewUserDetails(user)">
-        <ion-icon slot="icon-only" name="trash-bin-outline"></ion-icon>
+        <ion-icon slot="icon-only" name="trash-bin-outline" color="light"></ion-icon>
       </ion-button>
     </ion-item>
   </ion-list>
