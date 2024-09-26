@@ -32,6 +32,7 @@
                   type="email"
                   required
                   [(ngModel)]="loginData.email"
+                  (ngModelChange)="validateEmail(email)" 
                   #email="ngModel"
                 >
                   <div slot="label">Email</div>
