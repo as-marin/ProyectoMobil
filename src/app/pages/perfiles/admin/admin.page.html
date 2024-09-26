@@ -1,6 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>admin</ion-title>
+    <ion-title>Perfil de administrador</ion-title>
+    <ion-button slot="end" (click)="goBack()" color="danger">
+      <ion-icon name="power-outline"></ion-icon>
+    </ion-button>
+
   </ion-toolbar>
 </ion-header>
 
@@ -10,4 +14,50 @@
       <ion-title size="large">admin</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-card class="admin-" >
+    <div class="admin-card-header">
+      <ion-icon id="icon-admin" name="people-circle-outline" size="large"></ion-icon>
+      <div class="admin-info">
+        <ion-card-title class="admin-title">PedritoAdmin123</ion-card-title>
+        <ion-card-subtitle>
+          <span>Nombre: </span>Pedrito
+        </ion-card-subtitle>
+        <ion-card-subtitle>
+          <span>Apellido: </span>Admin123
+        </ion-card-subtitle>
+      </div>
+    </div>
+
+    <ion-card-content>
+      <ion-buttons class="admin-options">
+        <ion-button fill="outline" color="primary">
+          <ion-icon slot="start" name="add"></ion-icon>
+          Opciones de administrador
+        </ion-button>
+      </ion-buttons>
+    </ion-card-content>
+  </ion-card>
+  <ion-buttons class="ion-margin">
+    <ion-button routerLink="/registro">
+      <ion-icon  color="success" slot="start" name="add"></ion-icon>
+      Agregar nuevo alumno
+    </ion-button>
+  </ion-buttons>
+  <ion-list>
+    <ion-item *ngFor="let user of users" class="user-item">
+      <ion-avatar slot="start">
+        <img src="https://www.gravatar.com/avatar?d=identicon">
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ user.name }}</h2>
+        <p>{{ user.email }}</p>
+      </ion-label>
+      <ion-button slot="end" (click)="viewUserDetails(user)">
+        <ion-icon slot="icon-only" name="eye-outline" color="light"></ion-icon>
+      </ion-button>
+      <ion-button slot="end" color="danger" (click)="viewUserDetails(user)">
+        <ion-icon slot="icon-only" name="trash-bin-outline" color="light"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
 </ion-content>
