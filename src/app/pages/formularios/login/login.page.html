@@ -23,7 +23,7 @@
           </ion-card-header>
         </div>
         <ion-card-content>
-          <form #formularioLogin="ngForm" (ngSubmit)="onSubmit()">
+          <form #formularioLogin="ngForm" (ngSubmit)="onSubmit(formularioLogin)">
             <ion-list inset>
               <ion-item>
                 <ion-input
@@ -32,37 +32,46 @@
                   type="email"
                   required
                   [(ngModel)]="loginData.email"
+                  #email="ngModel"
                 >
                   <div slot="label">Email</div>
                 </ion-input>
               </ion-item>
+              <div *ngIf="email.invalid && email.touched" class="error-message">
+                <ion-text color="danger">Por favor ingresa un correo válido</ion-text>
+              </div>
+
               <ion-item>
                 <ion-input
                   labelPlacement="floating"
                   name="password"
                   type="password"
                   required
+                  minlength="8"
                   [(ngModel)]="loginData.password"
+                  #password="ngModel"
                 >
                   <div slot="label">Contraseña</div>
                 </ion-input>
               </ion-item>
+              <div *ngIf="password.invalid && password.touched" class="error-message">
+                <ion-text color="danger">La contraseña debe tener al menos 6 caracteres</ion-text>
+              </div>
             </ion-list>
             <ion-button
-              routerLink="/user"
               expand="block"
               type="submit"
-              [disabled]="formularioLogin.valid"
+              [disabled]="!formularioLogin.valid"
             >
               Iniciar Sesión
             </ion-button>
-            <ion-button type="link" expand="block" fill="clear" shape="round">
-              ¿Olvidaste tu contraseña?
-            </ion-button>
-            <ion-button type="link" routerLink="/registro" expand="block" fill="clear" shape="round">
-              ¿No tienes cuenta? Regístrate
-            </ion-button>
           </form>
+          <ion-button type="link" expand="block" fill="clear" shape="round">
+            ¿Olvidaste tu contraseña?
+          </ion-button>
+          <ion-button type="link" routerLink="/registro" expand="block" fill="clear" shape="round">
+            ¿No tienes cuenta? Regístrate
+          </ion-button>
         </ion-card-content>
       </ion-card>
     </div>
