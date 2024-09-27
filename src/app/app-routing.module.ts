@@ -39,14 +39,19 @@ const routes: Routes = [
   {
     path: 'inicio',
     loadChildren: () => import('./pages/menus/inicio/inicio.module').then( m => m.InicioPageModule)
-  },  {
+  },
+  {
     path: 'config',
     loadChildren: () => import('./pages/menus/config/config.module').then( m => m.ConfigPageModule)
   },
   {
     path: 'tests-not-found',
     loadChildren: () => import('./pages/tests-not-found/tests-not-found.module').then( m => m.TestsNotFoundPageModule)
+  },  {
+    path: 'teacher',
+    loadChildren: () => import('./pages/perfiles/teacher/teacher.module').then( m => m.TeacherPageModule)
   },
+
 
 
 
