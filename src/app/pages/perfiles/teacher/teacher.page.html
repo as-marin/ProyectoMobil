@@ -24,47 +24,24 @@
     </ion-list>
 
     <ion-item>
-      <ion-label>Teléfono:</ion-label>
-      <ion-label>+5694567890</ion-label>
-    </ion-item>
-
-    <ion-item>
       <ion-label>Sede:</ion-label>
       <ion-label>Sede Monte Olimpo</ion-label>
     </ion-item>
 
-    <ion-item>
-      <ion-label>Año de Ingreso:</ion-label>
-      <ion-label>2021</ion-label>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Promedio General:</ion-label>
-      <ion-label>3.5</ion-label>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Promedio Asistencia:</ion-label>
-      <ion-label>85%</ion-label>
-    </ion-item>
-
-    <ion-button expand="full" routerLink="/edit-profile">Editar Perfil</ion-button>
+    <ion-button expand="full" routerLink="/edit-profile">Configuraciones</ion-button>
   </div>
 
   <ion-list>
-    <ion-item *ngFor="let user of classes" class="user-item">
+    <ion-item *ngFor="let class of classes" class="user-item">
       <ion-avatar slot="start">
         <img src="https://www.gravatar.com/avatar?d=identicon">
       </ion-avatar>
       <ion-label>
-        <h2>{{ user.name }}</h2>
-        <p>{{ user.hour }}</p>
+        <h2>{{ class.name }}</h2>
+        <p>{{ class.hour }}</p>
       </ion-label>
-      <ion-button slot="end" (click)="viewUserDetails(user)">
-        <ion-icon slot="icon-only" name="eye-outline" color="light"></ion-icon>
-      </ion-button>
-      <ion-button slot="end" color="danger" (click)="viewUserDetails(user)">
-        <ion-icon slot="icon-only" name="trash-bin-outline" color="light"></ion-icon>
+      <ion-button slot="end" (click)="viewUserDetails(class)">
+        <ion-icon name="file-tray-full-outline"></ion-icon>
       </ion-button>
     </ion-item>
   </ion-list>
@@ -72,8 +49,8 @@
   <ion-tabs>
     <ion-tab-bar slot="bottom">
       <ion-tab-button tab="scan" routerLink="/tests-not-found">
-        <ion-icon name="camera"></ion-icon>
-        <ion-label>Escanear QR</ion-label>
+        <ion-icon name="qr-code-outline"></ion-icon>
+        <ion-label>Mostrar QR</ion-label>
       </ion-tab-button>
     </ion-tab-bar>
   </ion-tabs>
