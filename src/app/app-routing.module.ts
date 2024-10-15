@@ -51,6 +51,10 @@ const routes: Routes = [
     path: 'teacher',
     loadChildren: () => import('./pages/perfiles/teacher/teacher.module').then( m => m.TeacherPageModule)
   },
+  {
+    path: 'asistencia',
+    loadChildren: () => import('./pages/menus/asistencia/asistencia.module').then( m => m.AsistenciaPageModule)
+  },
 
 
 
