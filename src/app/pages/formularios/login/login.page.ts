@@ -1,6 +1,7 @@
+import { FireService } from './../../../services/fire.service';
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { NgForm, NgModel } from '@angular/forms';
+import { FormControl, FormGroup, NgForm, NgModel, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,30 +10,22 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  loginData = {
-    email: '',
-    password: ''
-  };
-  constructor(private navCtrl: NavController, private router: Router) {}  
+  loginForm= new FormGroup({
+    email:new FormControl([Validators.required, Validators.email]),
+    password:new FormControl([Validators.required])
+  });
+  constructor(private navCtrl: NavController, private router: Router, private fires:FireService) {}  
 
   ngOnInit() {}
 
-  validateEmail(emailField: NgModel) {
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    if (!emailPattern.test(this.loginData.email)) {
-      emailField.control.setErrors({ invalidEmail: true });
-    } else {
-      emailField.control.setErrors(null);
+   async onSubmit(){
+    try {
+      const {email,password} = this.loginForm.value;
+      await this.fires.login(email,password!);
+    } catch (error) {
+      
     }
-  }
 
-  onSubmit(formularioLogin: NgForm) {
-    if (formularioLogin.valid) {
-      console.log('Formulario válido:', this.loginData);
-      this.router.navigate(['/user']);
-    } else {
-      console.log('Formulario no válido');
-    }
   }
 
 
