@@ -47,6 +47,10 @@ const routes: Routes = [
     path: 'tests-not-found',
     loadChildren: () => import('./pages/tests-not-found/tests-not-found.module').then( m => m.TestsNotFoundPageModule)
   },
+  {
+    path: 'teacher',
+    loadChildren: () => import('./pages/perfiles/teacher/teacher.module').then( m => m.TeacherPageModule)
+  },
 
 
 
