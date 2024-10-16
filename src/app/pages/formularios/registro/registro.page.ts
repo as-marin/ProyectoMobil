@@ -91,7 +91,7 @@ export class RegistroPage implements OnInit {
       this.firebaseservice.setDocument(path, this.loginForm.value).then(async res =>{
         
         this.utilservice.saveInLocalStorage('user', this.loginForm.value)
-        this.utilservice.routerLink('/inicio');
+        this.utilservice.routerLink('/login');
         this.loginForm.reset();
 
 

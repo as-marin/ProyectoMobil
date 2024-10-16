@@ -36,7 +36,10 @@ export class LoginPage implements OnInit {
 
       this.firebaseservice.signIn(this.loginForm.value as User).then( res =>{
         
-        console.log(res)
+
+        this.getUserInfo(res.user.uid)
+
+
       }).catch(error => {
         console.log(error);
 
@@ -58,5 +61,56 @@ export class LoginPage implements OnInit {
   goBack() {
     this.navCtrl.back();
   }
+
+
+  async getUserInfo(uid: string) {
+    if (this.loginForm.valid) {
+
+      const loading = await this.utilservice.loading();
+      await loading.present();  
+
+      let path = `users/${uid}`
+
+      this.firebaseservice.getDocument(path).then((user: User) =>{
+        
+        this.utilservice.saveInLocalStorage('user', user)
+        this.utilservice.routerLink('/inicio');
+        this.loginForm.reset();
+
+
+        this.utilservice.presentToast({
+          message: `Bienvenido ${user.nombre}`,
+          duration: 2000,
+          color: 'primary',
+          position: 'top',
+          icon: 'person-circle-outline'
+        })
+
+
+
+      }).catch(error => {
+        console.log(error);
+
+        this.utilservice.presentToast({
+          message: error.message,
+          duration: 2000,
+          color: 'primary',
+          position: 'middle',
+          icon: 'alert-circle-outline'
+        })
+
+      }).finally(() =>  {
+        loading.dismiss()
+      })
+    }
+  }
+
+
+
+
+
+
+
+
     
 }
