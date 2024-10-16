@@ -23,86 +23,39 @@
           </ion-card-header>
         </div>
         <ion-card-content>
-          <form
-            #formularioRegistro="ngForm"
-            (ngSubmit)="onSubmit(formularioRegistro)"
-          >
+          <form [formGroup]="loginForm" (ngSubmit)="submit()" class="auth-form">
             <ion-list inset>
               <ion-item>
-                <ion-input
-                  labelPlacement="floating"
-                  name="name"
-                  type="text"
-                  required
-                  [(ngModel)]="loginData.name"
-                  label="Nombre"
-                >
+                <ion-input labelPlacement="floating" name="name" type="text" required 
+                  label="Nombre" formControlName="nombre">
+                  
                 </ion-input>
                 <ion-icon slot="start" name="person-outline"></ion-icon>
-              </ion-item>
+              </ion-item> 
               <ion-item>
-                <ion-input
-                  labelPlacement="floating"
-                  name="lastname"
-                  type="text"
-                  required
-                  [(ngModel)]="loginData.lastname"
-                  label="Apellido"
-                >
+                <ion-input labelPlacement="floating" name="lastname" type="text" required
+                  label="Apellido" formControlName="apellido">
                 </ion-input>
                 <ion-icon slot="start" name="reader-outline"></ion-icon>
               </ion-item>
               <ion-item>
-                <ion-input
-                  labelPlacement="floating"
-                  name="email"
-                  type="email"
-                  required
-                  [(ngModel)]="loginData.email"
-                  (ngModelChange)="validateEmail(email)"
-                  #email="ngModel"
-                >
+                <ion-input labelPlacement="floating" name="email" type="email" required formControlName="email" 
+                   >
                   <div slot="label">Email</div>
                 </ion-input>
                 <ion-icon slot="start" name="mail-outline"></ion-icon>
               </ion-item>
               <ion-item>
                 <!-- Input de Contrasena xd-->
-                <ion-input
-                labelPlacement="floating"
-                name="password"
-                type="password"
-                required
-                minlength="8"
-                [(ngModel)]="loginData.password"
-                #password="ngModel"
-                label="Contraseña"
-                >
+                <ion-input labelPlacement="floating" name="password" type="password" required minlength="8"
+                    label="Contraseña" formControlName="password">
                 </ion-input>
                 <ion-icon slot="start" name="lock-closed-outline"></ion-icon>
               </ion-item>
-              <ion-item>
-                <!-- Input de Confirmacion Contrasena xd-->
-                <ion-input
-                  labelPlacement="floating"
-                  name="confirmPassword"
-                  type="password"
-                  required
-                  [(ngModel)]="loginData.confirmPassword"
-                  label="Confirmar Contraseña"
-                >
-                </ion-input>
-                <ion-icon
-                  slot="start"
-                  name="checkmark-circle-outline"
-                ></ion-icon>
-              </ion-item>
             </ion-list>
-            <ion-button
-              expand="block"
-              type="submit"
-              [disabled]="!formularioRegistro.valid"
-            >
+            <ion-button               expand="block"
+            type="submit"
+            color="light">
               Registrarme
             </ion-button>
           </form>

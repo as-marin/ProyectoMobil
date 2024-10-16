@@ -4,6 +4,7 @@ import { NavController } from '@ionic/angular';
 import { FormControl, FormGroup, NgForm, NgModel, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/usuario.model';
+import { UtilsService } from 'src/app/services/utils.service';
 
 
 @Component({
@@ -11,37 +12,48 @@ import { User } from 'src/app/models/usuario.model';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
+
+
 export class LoginPage implements OnInit {
+
   loginForm= new FormGroup({
     email:new FormControl('', [Validators.required, Validators.email]),
     password:new FormControl('', [Validators.required])
   });
-  constructor(private navCtrl: NavController, private router: Router, /*private fires:FireService*/) {}  
+  constructor(private navCtrl: NavController, private router: Router,) {}  
 
   firebaseservice = inject(FireService);
+  utilservice = inject(UtilsService)
 
   ngOnInit() {}
 
 
-  submit() {
+  async submit() {
     if (this.loginForm.valid) {
+
+      const loading = await this.utilservice.loading();
+      await loading.present();  
+
       this.firebaseservice.signIn(this.loginForm.value as User).then( res =>{
         
         console.log(res)
+      }).catch(error => {
+        console.log(error);
+
+        this.utilservice.presentToast({
+          message: error.message,
+          duration: 2000,
+          color: 'primary',
+          position: 'middle',
+          icon: 'alert-circle-outline'
+        })
+
+      }).finally(() =>  {
+        loading.dismiss()
       })
     }
   }
    
-   /*async onSubmit(){
-    try {
-      const {email,password} = this.loginForm.value;
-      await this.fires.signIn(email!,password!);
-    } catch (error) {
-      
-    }
-
-  }*/
-
 
   goBack() {
     this.navCtrl.back();

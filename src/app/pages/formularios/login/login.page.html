@@ -23,7 +23,7 @@
           </ion-card-header>
         </div>
         <ion-card-content>
-          <form [formGroup]="loginForm" (ngSubmit)="submit()">
+          <form [formGroup]="loginForm" class="auth-form" (ngSubmit)="submit()" (keypress.enter="submit")>
             <ion-list inset>
               <ion-item>
                 <ion-input
