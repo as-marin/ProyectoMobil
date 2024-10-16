@@ -23,46 +23,41 @@
           </ion-card-header>
         </div>
         <ion-card-content>
-          <form #formularioLogin="ngForm" (ngSubmit)="onSubmit(formularioLogin)">
+          <form [formGroup]="loginForm" (ngSubmit)="submit()">
             <ion-list inset>
               <ion-item>
                 <ion-input
                   labelPlacement="floating"
-                  name="email"
+                  formControlName="email"
                   type="email"
                   required
-                  [(ngModel)]="loginData.email"
-                  (ngModelChange)="validateEmail(email)" 
-                  #email="ngModel"
                 >
                   <div slot="label">Email</div>
                 </ion-input>
               </ion-item>
-              <div *ngIf="email.invalid && email.touched" class="error-message">
+              <div *ngIf="loginForm.get('email').invalid && loginForm.get('email').touched" class="error-message">
                 <ion-text color="danger">Por favor ingresa un correo válido</ion-text>
               </div>
 
               <ion-item>
                 <ion-input
                   labelPlacement="floating"
-                  name="password"
+                  formControlName="password"
                   type="password"
                   required
                   minlength="8"
-                  [(ngModel)]="loginData.password"
-                  #password="ngModel"
                 >
                   <div slot="label">Contraseña</div>
                 </ion-input>
               </ion-item>
-              <div *ngIf="password.invalid && password.touched" class="error-message">
+              <div *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched" class="error-message">
                 <ion-text color="danger">La contraseña debe tener al menos 6 caracteres</ion-text>
               </div>
             </ion-list>
             <ion-button
               expand="block"
               type="submit"
-              [disabled]="!formularioLogin.valid"
+              [disabled]="loginForm.invalid"
               color="light"
             >
               Iniciar Sesión
@@ -78,4 +73,4 @@
       </ion-card>
     </div>
   </ion-content>
-</ion-content>
+</ion-content> 
