@@ -8,17 +8,14 @@ import { UtilsService } from 'src/app/services/utils.service';
 
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
+  selector: 'app-recuperarpw',
+  templateUrl: './recuperarpw.page.html',
+  styleUrls: ['./recuperarpw.page.scss'],
 })
-
-
-export class LoginPage implements OnInit {
+export class RecuperarpwPage implements OnInit {
 
   loginForm= new FormGroup({
     email:new FormControl('', [Validators.required, Validators.email]),
-    password:new FormControl('', [Validators.required])
   });
   constructor(private navCtrl: NavController, private router: Router,) {}  
 
@@ -27,10 +24,6 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {}
 
-  navigateToRecuperarPw() {
-    this.router.navigate(['/recuperarpw']);
-  }
-
 
   async submit() {
     if (this.loginForm.valid) {
@@ -38,10 +31,20 @@ export class LoginPage implements OnInit {
       const loading = await this.utilservice.loading();
       await loading.present();  
 
-      this.firebaseservice.signIn(this.loginForm.value as User).then( res =>{
-        
+      this.firebaseservice.sendRecoveryEmail(this.loginForm.value.email).then( res =>{
 
-        this.getUserInfo(res.user.uid)
+
+        this.utilservice.presentToast({
+          message: 'Correo enviado',
+          duration: 2000,
+          color: 'primary',
+          position: 'middle',
+          icon: 'mail-outline'
+        })
+
+
+        this.utilservice.routerLink('/login')
+        this.loginForm.reset
 
 
       }).catch(error => {
@@ -67,54 +70,9 @@ export class LoginPage implements OnInit {
   }
 
 
-  async getUserInfo(uid: string) {
-    if (this.loginForm.valid) {
-
-      const loading = await this.utilservice.loading();
-      await loading.present();  
-
-      let path = `users/${uid}`
-
-      this.firebaseservice.getDocument(path).then((user: User) =>{
-        
-        this.utilservice.saveInLocalStorage('user', user)
-        this.utilservice.routerLink('/inicio');
-        this.loginForm.reset();
-
-
-        this.utilservice.presentToast({
-          message: `Bienvenido ${user.nombre}`,
-          duration: 2000,
-          color: 'primary',
-          position: 'top',
-          icon: 'person-circle-outline'
-        })
-
-
-
-      }).catch(error => {
-        console.log(error);
-
-        this.utilservice.presentToast({
-          message: error.message,
-          duration: 2000,
-          color: 'primary',
-          position: 'middle',
-          icon: 'alert-circle-outline'
-        })
-
-      }).finally(() =>  {
-        loading.dismiss()
-      })
-    }
-  }
 
 
 
 
 
-
-
-
-    
 }
