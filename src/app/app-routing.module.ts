@@ -51,6 +51,10 @@ const routes: Routes = [
     path: 'recuperarpw',
     loadChildren: () => import('./pages/formularios/recuperarpw/recuperarpw.module').then( m => m.RecuperarpwPageModule)
   },
+  {
+    path: 'scanner',
+    loadChildren: () => import('./pages/funcionalidades/scanner/scanner.module').then( m => m.ScannerPageModule)
+  },
 
 
 
