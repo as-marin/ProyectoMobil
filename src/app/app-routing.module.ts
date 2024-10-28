@@ -51,6 +51,14 @@ const routes: Routes = [
     path: 'recuperarpw',
     loadChildren: () => import('./pages/formularios/recuperarpw/recuperarpw.module').then( m => m.RecuperarpwPageModule)
   },
+  {
+    path: 'teacher',
+    loadChildren: () => import('./pages/perfiles/teacher/teacher.module').then( m => m.TeacherPageModule)
+  },
+  {
+    path: 'asistencia',
+    loadChildren: () => import('./pages/menus/asistencia/asistencia.module').then( m => m.AsistenciaPageModule)
+  },
 
 
 

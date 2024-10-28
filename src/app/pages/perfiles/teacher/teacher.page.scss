@@ -1,0 +1,154 @@
+/* Header */
+ion-toolbar {
+  --background: var(--dark-surface);
+  --color: var(--text-primary);
+  
+  ion-title {
+    font-weight: 400;
+    font-size: 1.1rem;
+  }
+
+  ion-button[color="danger"] {
+    --background: #dc3545;
+    margin: 0;
+  }
+}
+
+/* Content */
+ion-content {
+  --background: var(--dark-bg);
+
+  .profile-container {
+    ion-item:first-child {
+      --background: var(--dark-surface);
+      --padding-start: 16px;
+      --padding-end: 16px;
+      --inner-padding-end: 0;
+      border-bottom: 1px solid var(--border-color);
+      
+      ion-avatar {
+        width: 48px;
+        height: 48px;
+        margin-right: 12px;
+      }
+
+      ion-label {
+        h1 {
+          font-size: 1.1rem;
+          color: var(--text-primary);
+          margin: 0;
+          font-weight: 400;
+        }
+        
+        p {
+          color: var(--text-secondary);
+          font-size: 0.9rem;
+          margin-top: 4px;
+        }
+      }
+    }
+  }
+}
+
+/* Sede section */
+ion-item.sede-item {
+  --background: transparent;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --min-height: 40px;
+  
+  ion-label {
+    margin: 8px 0;
+    
+    &:first-child {
+      color: var(--text-secondary);
+      margin-right: 8px;
+    }
+
+    &:last-child {
+      color: var(--text-primary);
+    }
+  }
+}
+
+/* Configuration button */
+ion-button[routerLink="/edit-profile"] {
+  --background: #0d6efd;
+  margin: 16px;
+  height: 44px;
+  --border-radius: 4px;
+  font-size: 0.95rem;
+  text-transform: none;
+  --box-shadow: none;
+}
+
+/* Classes section */
+ion-list {
+  background: transparent;
+  margin: 0;
+  padding: 0;
+
+  ion-title {
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    font-weight: 400;
+    padding: 16px;
+  }
+
+  .user-item {
+    --background: var(--dark-surface);
+    --padding-start: 16px;
+    --padding-end: 16px;
+    margin-bottom: 1px;
+    
+    ion-avatar {
+      width: 48px;
+      height: 48px;
+      margin-right: 12px;
+    }
+    
+    ion-label {
+      h2 {
+        color: var(--text-primary);
+        font-size: 0.95rem;
+        margin: 0;
+        font-weight: 400;
+      }
+      
+      p {
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        margin-top: 4px;
+      }
+    }
+    
+    ion-button {
+      --background: transparent;
+      --color: #4a90e2;
+      --padding-start: 8px;
+      --padding-end: 8px;
+      margin: 0;
+      height: auto;
+    }
+  }
+}
+
+/* QR Tab */
+ion-tab-bar {
+  --background: var(--dark-surface);
+  border-top: 1px solid var(--border-color);
+  
+  ion-tab-button {
+    --color: var(--text-secondary);
+    
+    ion-icon {
+      font-size: 30px;
+    }
+    
+    ion-label {
+      font-size: 0.8rem;
+      margin-top: none;
+      text-transform: none;
+    }
+  }
+}

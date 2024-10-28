@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Mi Perfil (Profesor123123)</ion-title>
+
+      <ion-button slot="end" (click)="goBack()" color="danger">
+        <ion-icon name="power-outline" ></ion-icon>
+      </ion-button>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="profile-container">
+    <ion-list>
+      <ion-item>
+        <ion-avatar slot="start">
+          <img src="https://www.gravatar.com/avatar?d=identicon">
+        </ion-avatar>
+        <ion-label>
+          <h1>Nombre Apellido</h1>
+          <p>Profesor</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-item class="sede-item">
+      <ion-label>Sede:</ion-label>
+      <ion-label>Sede Monte Olimpo</ion-label>
+    </ion-item>
+
+    <ion-button expand="full" routerLink="/edit-profile">Configuraciones</ion-button>
+  </div>
+
+  <ion-list>
+    <ion-title class="ion-padding">Cursos a impartir</ion-title>
+    <ion-item *ngFor="let class of classes" class="user-item">
+      <ion-avatar slot="start">
+        <img src="https://www.gravatar.com/avatar?d=identicon">
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ class.name }}</h2>
+        <p>{{ class.hour }}</p>
+      </ion-label>
+      <ion-button slot="end" (click)="viewUserDetails(class)">
+        <ion-icon name="file-tray-full-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="scan" routerLink="/tests-not-found">
+        <ion-icon name="qr-code-outline"></ion-icon>
+        <ion-label>Mostrar QR</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-content>
