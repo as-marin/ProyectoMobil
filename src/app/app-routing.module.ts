@@ -47,7 +47,8 @@ const routes: Routes = [
   {
     path: 'tests-not-found',
     loadChildren: () => import('./pages/tests-not-found/tests-not-found.module').then( m => m.TestsNotFoundPageModule)
-  },  {
+  },
+  {
     path: 'recuperarpw',
     loadChildren: () => import('./pages/formularios/recuperarpw/recuperarpw.module').then( m => m.RecuperarpwPageModule)
   },
@@ -58,6 +59,10 @@ const routes: Routes = [
   {
     path: 'asistencia',
     loadChildren: () => import('./pages/menus/asistencia/asistencia.module').then( m => m.AsistenciaPageModule)
+  },
+  {
+    path: 'scanner',
+    loadChildren: () => import('./pages/funcionalidades/scanner/scanner.module').then( m => m.ScannerPageModule)
   },
 
 
