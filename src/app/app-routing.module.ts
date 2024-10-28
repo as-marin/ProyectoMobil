@@ -59,6 +59,10 @@ const routes: Routes = [
     path: 'asistencia',
     loadChildren: () => import('./pages/menus/asistencia/asistencia.module').then( m => m.AsistenciaPageModule)
   },
+  {
+    path: 'configuracion',
+    loadChildren: () => import('./pages/menus/configuracion/configuracion.module').then( m => m.ConfiguracionPageModule)
+  },
 
 
 
