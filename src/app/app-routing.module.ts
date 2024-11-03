@@ -63,7 +63,11 @@ const routes: Routes = [
   {
     path: 'scanner',
     loadChildren: () => import('./pages/funcionalidades/scanner/scanner.module').then( m => m.ScannerPageModule)
+  },  {
+    path: 'horario',
+    loadChildren: () => import('./pages/menus/horario/horario.module').then( m => m.HorarioPageModule)
   },
+
 
 
 
