@@ -1,6 +1,9 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="primary">
     <ion-title>Horario</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -74,14 +77,16 @@
       </ion-grid>
     </ion-card-content>
   </ion-card>
-
+  <ion-button routerLink="/asistencia" expand="block">
+    Ver Asistencia
+  </ion-button>
   <ion-card class="today-card">
     <ion-card-header>
       <ion-card-title color="primary">
         <ion-icon name="today-outline" class="ion-margin-end"></ion-icon>
         Hoy
       </ion-card-title>
-      <ion-card-subtitle>Lunes</ion-card-subtitle>
+      <ion-card-subtitle class="ion-padding">Lunes, 14 de Noviembre</ion-card-subtitle>
     </ion-card-header>
   
     <ion-card-content>
