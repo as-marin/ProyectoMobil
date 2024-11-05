@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { TestsNotFoundPageRoutingModule } from './tests-not-found-routing.module';
+import { ScanPageRoutingModule } from './scan-routing.module';
 
-import { TestsNotFoundPage } from './tests-not-found.page';
+import { ScanPage } from './scan.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    TestsNotFoundPageRoutingModule
+    ScanPageRoutingModule
   ],
-  declarations: [TestsNotFoundPage]
+  declarations: [ScanPage]
 })
-export class TestsNotFoundPageModule {}
+export class ScanPageModule {}

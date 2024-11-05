@@ -45,10 +45,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/menus/config/config.module').then( m => m.ConfigPageModule)
   },
   {
-    path: 'tests-not-found',
-    loadChildren: () => import('./pages/tests-not-found/tests-not-found.module').then( m => m.TestsNotFoundPageModule)
-  },
-  {
     path: 'recuperarpw',
     loadChildren: () => import('./pages/formularios/recuperarpw/recuperarpw.module').then( m => m.RecuperarpwPageModule)
   },
@@ -63,7 +59,11 @@ const routes: Routes = [
   {
     path: 'scanner',
     loadChildren: () => import('./pages/funcionalidades/scanner/scanner.module').then( m => m.ScannerPageModule)
+  },  {
+    path: 'scan',
+    loadChildren: () => import('./pages/menus/scan/scan.module').then( m => m.ScanPageModule)
   },
+
 
 
 
