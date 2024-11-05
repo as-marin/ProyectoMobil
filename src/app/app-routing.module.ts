@@ -59,17 +59,15 @@ const routes: Routes = [
   {
     path: 'scanner',
     loadChildren: () => import('./pages/funcionalidades/scanner/scanner.module').then( m => m.ScannerPageModule)
-  },  {
+  },
+  {
     path: 'scan',
     loadChildren: () => import('./pages/menus/scan/scan.module').then( m => m.ScanPageModule)
   },
-
-
-
-
-
-
-
+  {
+    path: 'horario',
+    loadChildren: () => import('./pages/menus/horario/horario.module').then( m => m.HorarioPageModule)
+  }
 
 
 

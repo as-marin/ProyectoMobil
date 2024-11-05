@@ -1,0 +1,73 @@
+.schedule-grid {
+    border: 1px solid var(--ion-color-medium);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.header-row {
+    background-color: var(--ion-color-primary);
+    color: var(--ion-color-primary-contrast);
+    font-weight: bold;
+}
+
+.time-row {
+    border-bottom: 1px solid var(--ion-color-medium-shade);
+}
+
+.time-row:last-child {
+    border-bottom: none;
+}
+
+.time-col {
+    background-color: var(--ion-color-light);
+    font-weight: 500;
+}
+
+.break-row {
+    background-color: var(--ion-color-light);
+}
+
+.today-card ion-card-header {
+    padding-bottom: 8px;
+}
+
+.today-card ion-item {
+    --padding-start: 8px;
+    --padding-end: 8px;
+}
+
+.today-card ion-icon {
+    vertical-align: middle;
+}
+
+.today-card h2 {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.today-card ion-card-subtitle {
+    font-size: 20px;
+    color: var(--ion-color-primary);
+    margin: 4px 0 0;
+}
+
+ion-col {
+    padding: 12px 8px;
+    font-size: 14px;
+}
+
+@media (max-width: 576px) {
+    ion-col {
+        font-size: 12px;
+        padding: 8px 4px;
+    }
+
+    .today-card h2 {
+        font-size: 14px;
+    }
+
+    .today-card p {
+        font-size: 12px;
+    }
+}
