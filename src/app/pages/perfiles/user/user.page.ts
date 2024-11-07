@@ -19,6 +19,7 @@ export class UserPage implements OnInit {
 
   ngOnInit() {
     this.user = this.utilservice.getFromLocalStorage('user');
+    this.user = this.utilservice.getFromLocalStorage('password');
   }
 
   goBack() {
