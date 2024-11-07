@@ -7,13 +7,14 @@ import { map } from 'rxjs/operators';
 })
 
 export class HourService {
+  private readonly STORED_TIME_KEY = 'storedTime';
 
-  getCurrentTime(): string {
-    return new Date().toLocaleTimeString();
+  getStoredTime(): string {
+    return localStorage.getItem(this.STORED_TIME_KEY) || '';
   }
   getTimeUpdates(): Observable<string> {
     return interval(1000).pipe(
-      map(() => this.getCurrentTime())
+      map(() => this.getStoredTime())
     );
   }
   constructor() { }
@@ -25,26 +26,26 @@ se debe importar en el componente que se desee utilizar.
 De la siguiente forma:
 scanner.page.ts (O en cualquier otra pagina que se desee utilizar)
 
-import { TimeService } from '../../services/time.service';
+import { HourService } from '../../services/hour.service';
 
 export class ScannerPage implements OnInit {
-  currentTime: string;
+  currentHour: string;
   
   constructor(
     private alertController: AlertController,
-    private timeService: TimeService
+    private hourService: HourService
   ) { }
 
   ngOnInit() {
     // Existing code...
     
     // Get initial time
-    this.currentTime = this.timeService.getCurrentTime();
+    this.currentHour = this.hourService.getCurrentHour();
     
     // Subscribe to time updates
-    this.timeService.getTimeUpdates().subscribe(time => {
-      this.currentTime = time;
-    });
-  }
+      this.hourService.getHourUpdates().subscribe(hour => {
+        this.currentHour = hour;
+      });
+    }
 }
 */
