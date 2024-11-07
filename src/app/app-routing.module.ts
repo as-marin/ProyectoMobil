@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { RoleGuard } from "../app/guards/role.guard";
 
 const routes: Routes = [
   {
@@ -38,7 +39,9 @@ const routes: Routes = [
   },
   {
     path: 'inicio',
-    loadChildren: () => import('./pages/menus/inicio/inicio.module').then( m => m.InicioPageModule)
+    loadChildren: () => import('./pages/menus/inicio/inicio.module').then( m => m.InicioPageModule),
+    canActivate: [RoleGuard],
+    data: { role: 'estudiante' }
   },
   {
     path: 'config',
@@ -50,7 +53,9 @@ const routes: Routes = [
   },
   {
     path: 'teacher',
-    loadChildren: () => import('./pages/perfiles/teacher/teacher.module').then( m => m.TeacherPageModule)
+    loadChildren: () => import('./pages/perfiles/teacher/teacher.module').then( m => m.TeacherPageModule),
+    canActivate: [RoleGuard],
+    data: { role: 'profesor' } // Solo accesible para el rol 'profesor'
   },
   {
     path: 'asistencia',
@@ -67,7 +72,9 @@ const routes: Routes = [
   {
     path: 'horario',
     loadChildren: () => import('./pages/menus/horario/horario.module').then( m => m.HorarioPageModule)
-  }
+  },
+
+  
 
 
 

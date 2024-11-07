@@ -1,10 +1,10 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Mi Perfil (Profesor123123)</ion-title>
+    <ion-title>Mi Perfil</ion-title>
 
-      <ion-button slot="end" (click)="goBack()" color="danger">
-        <ion-icon name="power-outline" ></ion-icon>
-      </ion-button>
+    <ion-button slot="end" (click)="logout()" color="danger">
+      <ion-icon name="power-outline"></ion-icon>
+    </ion-button>
 
   </ion-toolbar>
 </ion-header>
@@ -17,7 +17,7 @@
           <img src="https://www.gravatar.com/avatar?d=identicon">
         </ion-avatar>
         <ion-label>
-          <h1>Nombre Apellido</h1>
+          <h1>{{user.name}} {{user.apellido}}</h1>
           <p>Profesor</p>
         </ion-label>
       </ion-item>

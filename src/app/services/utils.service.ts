@@ -40,5 +40,8 @@ export class UtilsService {
 
   }
 
+  clearLocalStorage() {
+    localStorage.clear();
+  }
 
 }

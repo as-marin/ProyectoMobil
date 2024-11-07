@@ -78,17 +78,23 @@ export class LoginPage implements OnInit {
       this.firebaseservice.getDocument(path).then((user: User) =>{
         
         this.utilservice.saveInLocalStorage('user', user)
-        this.utilservice.routerLink('/inicio');
+        if (user.role === 'profesor') {
+
+          this.utilservice.routerLink('/teacher');
+        } else {
+
+          this.utilservice.routerLink('/inicio');
+        }
         this.loginForm.reset();
 
 
-        this.utilservice.presentToast({
+        /*this.utilservice.presentToast({
           message: `Bienvenido ${user.nombre}`,
           duration: 2000,
           color: 'primary',
           position: 'top',
           icon: 'person-circle-outline'
-        })
+        })*/
 
 
 

@@ -28,6 +28,7 @@ export class RegistroPage implements OnInit {
     password:new FormControl('', [Validators.required]),
     nombre:new FormControl('', [Validators.required]),
     apellido:new FormControl('', [Validators.required]),
+    role: new FormControl('estudiante', [Validators.required])
     
   });
 
@@ -114,26 +115,6 @@ export class RegistroPage implements OnInit {
 
 
 
-
-
-
-  /*validateEmail(emailField: NgModel) {
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    if (!emailPattern.test(this.loginData.email)) {
-      emailField.control.setErrors({ invalidEmail: true });
-    } else {
-      emailField.control.setErrors(null);
-    }
-  }*/
-
-  /*onSubmit(formularioRegistro: NgForm) {
-    if (formularioRegistro.valid && this.loginData.password === this.loginData.password) {
-      console.log('Formulario válido:', this.loginData);
-      this.router.navigate(['/login']);
-    } else {
-      console.log('Formulario no válido o contraseñas no coinciden');
-    }
-  }*/
 
   goBack() {
     this.navCtrl.back();

@@ -1,10 +1,11 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Mi Perfil (Pepito123)</ion-title>
+    <ion-title>Mi Perfil</ion-title>
 
-      <ion-button slot="end" (click)="goBack()" color="danger">
-        <ion-icon name="power-outline" ></ion-icon>
-      </ion-button>
+    <ion-button slot="end" (click)="logout()" color="danger">
+      <ion-icon name="power-outline"></ion-icon>
+    </ion-button>
+    
 
   </ion-toolbar>
 </ion-header>
@@ -17,7 +18,7 @@
           <img src="https://www.gravatar.com/avatar?d=identicon">
         </ion-avatar>
         <ion-label>
-          <h1>Nombre Apellido</h1>
+          <h1>{{user.nombre}}  {{user.apellido}}</h1>
           <p>Estudiante</p>
         </ion-label>
       </ion-item>
@@ -52,7 +53,7 @@
   </div>
   <ion-tabs>
     <ion-tab-bar slot="bottom">
-      <ion-tab-button tab="scan" routerLink="/tests-not-found">
+      <ion-tab-button tab="scan" routerLink="scan">
         <ion-icon name="camera"></ion-icon>
         <ion-label>Escanear QR</ion-label>
       </ion-tab-button>
