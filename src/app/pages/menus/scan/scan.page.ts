@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { Geolocation } from '@capacitor/geolocation';
 import { AlertController } from '@ionic/angular';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   selector: 'app-scan',
@@ -14,13 +16,22 @@ export class ScanPage implements OnInit {
   private allowedRange = 1000; // Rango permitido en metros
   isSupported = false;
   barcodes: Barcode[] = [];
+  studentData: any; // Reemplazar el valor inicial con datos del estudiante logueado
 
-  constructor(private alertController: AlertController) {}
+  constructor(
+    private alertController: AlertController,
+    private firestore: AngularFirestore,
+    private utilService: UtilsService
+  ) {}
 
   ngOnInit() {
+    // Verificar si BarcodeScanner es compatible
     BarcodeScanner.isSupported().then((result) => {
       this.isSupported = result.supported;
     });
+
+    // Cargar los datos del estudiante logueado
+    this.studentData = this.utilService.getFromLocalStorage('user');
   }
 
   async getCurrentPosition() {
@@ -72,9 +83,50 @@ export class ScanPage implements OnInit {
       this.presentAlert('Permiso denegado', 'Para usar la aplicación autorizar los permisos de cámara');
       return;
     }
+    
     const { barcodes } = await BarcodeScanner.scan();
     this.barcodes.push(...barcodes);
-    console.log("Códigos escaneados:", this.barcodes);
+
+    // Procesa los datos del QR escaneado
+    if (barcodes.length > 0) {
+      try {
+        const qrData = JSON.parse(barcodes[0].displayValue); // Asume que el QR contiene datos en formato JSON
+        const { sectionId, classDate } = qrData;
+
+        // Guardar asistencia en Firestore
+        await this.saveAttendance(sectionId, classDate);
+      } catch (error) {
+        console.error("Error al procesar el código QR:", error);
+        await this.presentAlert('Error', 'El código QR escaneado es inválido.');
+      }
+    }
+  }
+
+  async saveAttendance(sectionId: string, classDate: string) {
+    try {
+      // Definir la ruta a la subcolección de asistencia de la sección
+      const attendancePath = `sections/${sectionId}/attendance`;
+
+      // Usa la fecha de la clase como ID de documento
+      await this.firestore
+        .collection(attendancePath)
+        .doc(classDate)
+        .set(
+          {
+            [this.studentData.email]: {
+              ...this.studentData,
+              timestamp: new Date(), // Opcional: marca la hora de escaneo
+            }
+          },
+          { merge: true } // Combina con el documento existente si ya existe
+        );
+
+      console.log('Asistencia registrada con éxito.');
+      await this.presentAlert('Éxito', 'Asistencia registrada.');
+    } catch (error) {
+      console.error('Error al guardar la asistencia:', error);
+      await this.presentAlert('Error', 'No se pudo registrar la asistencia.');
+    }
   }
 
   async requestPermissions(): Promise<boolean> {

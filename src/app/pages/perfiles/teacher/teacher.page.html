@@ -5,11 +5,10 @@
     <ion-button slot="end" (click)="logout()" color="danger">
       <ion-icon name="power-outline"></ion-icon>
     </ion-button>
-
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content>
   <div class="profile-container">
     <ion-list>
       <ion-item>
@@ -28,31 +27,42 @@
       <ion-label>Sede Monte Olimpo</ion-label>
     </ion-item>
 
-    <ion-button expand="full" routerLink="/edit-profile">Configuraciones</ion-button>
+    
   </div>
 
+
+  <!-- Sección de clases -->
   <ion-list>
-    <ion-title class="ion-padding">Cursos a impartir</ion-title>
-    <ion-item *ngFor="let class of classes" class="user-item">
-      <ion-avatar slot="start">
-        <img src="https://www.gravatar.com/avatar?d=identicon">
-      </ion-avatar>
-      <ion-label>
-        <h2>{{ class.name }}</h2>
-        <p>{{ class.hour }}</p>
-      </ion-label>
-      <ion-button slot="end" (click)="viewUserDetails(class)">
-        <ion-icon name="file-tray-full-outline"></ion-icon>
-      </ion-button>
+    <ion-button 
+    *ngFor="let section of sections" 
+    (click)="onSectionSelect(section.id)" 
+    [class.selected]="selectedSection === section.id">
+    {{ section.name }}
+  </ion-button>
+  </ion-list>
+
+  <!-- Fechas de asistencia -->
+  <ion-list *ngIf="selectedSection">
+    <ion-item *ngFor="let date of attendanceDates" (click)="onDateSelect(date.date)">
+      <ion-label>{{ date.date }}</ion-label>
     </ion-item>
   </ion-list>
 
-  <ion-tabs>
+  <!-- Estudiantes para la fecha seleccionada -->
+  <ion-list *ngIf="selectedDate">
+    <ion-item *ngFor="let student of studentsForDate">
+      <ion-label>{{ student.nombre }} {{ student.apellido }} ({{ student.email }})</ion-label>
+    </ion-item>
+  </ion-list> 
+
+ <!-- <ion-tabs>
     <ion-tab-bar slot="bottom">
       <ion-tab-button tab="scan" routerLink="/scanner">
         <ion-icon name="qr-code-outline"></ion-icon>
         <ion-label>Mostrar QR</ion-label>
       </ion-tab-button>
     </ion-tab-bar>
-  </ion-tabs>
+  </ion-tabs> -->
+
+  
 </ion-content>

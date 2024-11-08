@@ -1,47 +1,47 @@
 import { Component, OnInit } from '@angular/core';
-import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
-import { AlertController } from '@ionic/angular';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { formatDate } from '@angular/common';
+import { QRCodeComponent } from "angularx-qrcode";
+
 @Component({
   selector: 'app-scanner',
   templateUrl: './scanner.page.html',
   styleUrls: ['./scanner.page.scss'],
 })
 export class ScannerPage implements OnInit {
+  classForm: FormGroup;
+  sections: any[] = []; // Populate with actual sections from Firestore
+  qrCodeData: string | null = null;
 
-  constructor(private alertController: AlertController) { }
-
-  isSupported = false;
-  barcodes: Barcode[] = [];
-
+  constructor(private fb: FormBuilder, private firestore: AngularFirestore) {
+    this.classForm = this.fb.group({
+      section: ['']
+    });
+  }
 
   ngOnInit() {
-    BarcodeScanner.isSupported().then((result) => {
-      this.isSupported = result.supported;
-    });
+    this.fetchSections();
   }
 
-  async scan(): Promise<void> {
-    const granted = await this.requestPermissions();
-    if (!granted) {
-      this.presentAlert();
-      return;
+  fetchSections() {
+    // Fetch sections from Firestore
+    this.firestore.collection('sections').valueChanges({ idField: 'sectionID' })
+      .subscribe((sections: any[]) => {
+        this.sections = sections;
+      });
+  }
+
+  generateQrCode() {
+    const sectionId = this.classForm.get('section')?.value;
+    const classDate = formatDate(new Date(), 'yyyy-MM-dd', 'en');
+    if (sectionId) {
+      this.qrCodeData = JSON.stringify({
+        sectionId,
+        classDate,
+      });
+    } else {
+      console.error("No section selected!");
     }
-    const { barcodes } = await BarcodeScanner.scan();
-    this.barcodes.push(...barcodes);
   }
-
-  async requestPermissions(): Promise<boolean> {
-    const { camera } = await BarcodeScanner.requestPermissions();
-    return camera === 'granted' || camera === 'limited';
-  }
-
-  async presentAlert(): Promise<void> {
-    const alert = await this.alertController.create({
-      header: 'Permiso denegado',
-      message: 'Para usar la aplicación necesita autorizar los permisos de la cámara.',
-      buttons: ['OK'],
-    });
-    await alert.present();
-  }
-
 }

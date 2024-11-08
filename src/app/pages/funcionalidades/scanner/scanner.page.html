@@ -1,19 +1,27 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Escanea QR Asistencia</ion-title>
+    <ion-title>Generate QR Code</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item *ngFor="let barcode of barcodes">
-      <ion-label position="stacked">{{ barcode.format }}</ion-label>
-      <ion-input type="text" [value]="barcode.rawValue"></ion-input>
+  <form [formGroup]="classForm">
+    <!-- Dropdown for selecting a section -->
+    <ion-item>
+      <ion-label>Section</ion-label>
+      <ion-select formControlName="section" placeholder="Select a section">
+        <ion-select-option *ngFor="let section of sections" [value]="section.id">
+          {{ section.name }}
+        </ion-select-option>
+      </ion-select>
     </ion-item>
-  </ion-list>
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button (click)="scan()" [disabled]="!isSupported">
-      <ion-icon name="scan"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+
+    <!-- Button to generate the QR code -->
+    <ion-button expand="block" (click)="generateQrCode()">Generate QR Code</ion-button>
+  </form>
+
+  <!-- Display the QR code if qrCodeData is generated -->
+  <div *ngIf="qrCodeData" class="qr-code-container">
+    <qrcode [qrdata]="qrCodeData" [width]="200"></qrcode>
+  </div>
 </ion-content>
