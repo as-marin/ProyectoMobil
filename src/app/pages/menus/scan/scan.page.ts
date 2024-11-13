@@ -4,6 +4,8 @@ import { Geolocation } from '@capacitor/geolocation';
 import { AlertController } from '@ionic/angular';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { UtilsService } from 'src/app/services/utils.service';
+import { NavController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-scan',
@@ -11,17 +13,18 @@ import { UtilsService } from 'src/app/services/utils.service';
   styleUrls: ['./scan.page.scss'],
 })
 export class ScanPage implements OnInit {
-  private campusLatitude = -36.795334554350454;
-  private campusLongitude = -73.06218485219422;
-  private allowedRange = 1000; // Rango permitido en metros
+
+  private allowedRange = 10; // Rango permitido en metros
   isSupported = false;
   barcodes: Barcode[] = [];
   studentData: any; // Reemplazar el valor inicial con datos del estudiante logueado
+  scannedQrData: any;
 
   constructor(
     private alertController: AlertController,
     private firestore: AngularFirestore,
-    private utilService: UtilsService
+    private utilService: UtilsService,
+    private navCtrl: NavController
   ) {}
 
   ngOnInit() {
@@ -41,6 +44,10 @@ export class ScanPage implements OnInit {
     return { studentLatitude, studentLongitude };
   }
 
+  goBack() {
+    this.navCtrl.back();
+  }
+
   getDistanceFromLatLonInMeters(lat1: number, lon1: number, lat2: number, lon2: number): number {
     const R = 6371e3; // Radio de la Tierra en metros
     const dLat = (lat2 - lat1) * (Math.PI / 180);
@@ -56,51 +63,84 @@ export class ScanPage implements OnInit {
 
   async isWithinAllowedRange() {
     try {
+      // Paso 1: Obtener la posición actual del estudiante
       const { studentLatitude, studentLongitude } = await this.getCurrentPosition();
+  
+      // Paso 2: Escanear el QR
+      const scannedQrData = await this.scan(); // Esto ya devuelve los datos del QR, no lo llames de nuevo aquí
+  
+      if (!scannedQrData) {
+        return; // Si no hay datos de QR, retorna sin hacer nada
+      }
+  
+      // Paso 3: Extraer las coordenadas del profesor desde el QR
+      const profeLatitude = scannedQrData.profeLatitude;
+      const profeLongitude = scannedQrData.profeLongitude;
+  
+      if (profeLatitude === undefined || profeLongitude === undefined) {
+        await this.presentAlert('Error', 'El QR no contiene coordenadas válidas del profesor.');
+        return;
+      }
+  
+      // Paso 4: Calcular la distancia entre el estudiante y el profesor
       const distance = this.getDistanceFromLatLonInMeters(
-        this.campusLatitude,
-        this.campusLongitude,
+        profeLatitude,
+        profeLongitude,
         studentLatitude,
         studentLongitude
       );
-
+  
+      // Paso 5: Verificar si está dentro del rango permitido
       if (distance <= this.allowedRange) {
-        console.log("Estás dentro del rango permitido. Ahora puedes escanear el QR.");
-        await this.scan();
+        console.log("Estás dentro del rango permitido. Puedes registrar la asistencia.");
+        await this.saveAttendance(scannedQrData.sectionId, scannedQrData.classDate); // Llamar a saveAttendance con los datos del QR
       } else {
-        console.log("Estás fuera del rango permitido. Acércate a la sede.");
-        await this.presentAlert('Fuera de rango', 'Estás fuera del rango permitido. Acércate a la sede.');
+        console.log("Estás fuera del rango permitido. Acércate al profesor.");
+        await this.presentAlert('Fuera de rango', 'Estás fuera del rango permitido. Acércate al profesor.');
       }
     } catch (error) {
-      console.error("Error al obtener la ubicación:", error);
-      await this.presentAlert('Error', 'No se pudo obtener la ubicación.');
+      console.error("Error al obtener la ubicación o al escanear el QR:", error);
+      await this.presentAlert('Error', 'Ocurrió un error al intentar escanear el QR o obtener la ubicación.');
     }
   }
-
-  async scan(): Promise<void> {
+  
+  async scan(): Promise<any> {
     const granted = await this.requestPermissions();
     if (!granted) {
       this.presentAlert('Permiso denegado', 'Para usar la aplicación autorizar los permisos de cámara');
-      return;
+      return null; // Si no se obtiene permiso, retornamos null
     }
-    
+  
     const { barcodes } = await BarcodeScanner.scan();
-    this.barcodes.push(...barcodes);
-
-    // Procesa los datos del QR escaneado
     if (barcodes.length > 0) {
       try {
         const qrData = JSON.parse(barcodes[0].displayValue); // Asume que el QR contiene datos en formato JSON
-        const { sectionId, classDate } = qrData;
-
-        // Guardar asistencia en Firestore
-        await this.saveAttendance(sectionId, classDate);
+        const { sectionId, classDate, profeLatitude, profeLongitude } = qrData;
+  
+        // Verifica que la fecha de la clase sea válida
+        const currentDate = new Date();
+        const classDateParts = classDate.split('-'); // '13-11-2024' -> ['13', '11', '2024']
+        const classDateObj = new Date(Number(classDateParts[2]), Number(classDateParts[1]) - 1, Number(classDateParts[0]));
+  
+        if (classDateObj.toDateString() !== currentDate.toDateString()) {
+          console.log("La clase no está programada para hoy.");
+          await this.presentAlert('Fecha inválida', 'El código QR no corresponde a la clase de hoy.');
+          return null; // Si la fecha no es válida, retornamos null
+        }
+  
+        // Almacena los datos escaneados en scannedQrData y retorna los datos
+        return { sectionId, classDate, profeLatitude, profeLongitude };
       } catch (error) {
         console.error("Error al procesar el código QR:", error);
         await this.presentAlert('Error', 'El código QR escaneado es inválido.');
+        return null; // Si hay un error, retornamos null
       }
+    } else {
+      console.log("No se pudo escanear el QR.");
+      return null; // Si no se escaneó ningún código, retornamos null
     }
   }
+  
 
   async saveAttendance(sectionId: string, classDate: string) {
     try {

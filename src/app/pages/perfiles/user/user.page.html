@@ -1,12 +1,12 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Mi Perfil</ion-title>
-
+    <ion-button (click)="goBack()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </ion-button>
     <ion-button slot="end" (click)="logout()" color="danger">
       <ion-icon name="power-outline"></ion-icon>
     </ion-button>
-    
-
   </ion-toolbar>
 </ion-header>
 

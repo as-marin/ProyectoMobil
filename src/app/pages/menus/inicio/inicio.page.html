@@ -1,26 +1,49 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Title</ion-title>
+    <ion-title> </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-toolbar>
-        <ion-title> Bienvenido, userName</ion-title>
-      </ion-toolbar>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <div class="welcome-container">
+    <ion-card *ngIf="user" class="welcome-card">
+      <ion-card-content>
+        <h2>Bienvenido, {{ user.nombre }}</h2>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <ion-content class="ion-padding">
+    <div class="attendance-container">
+      <ion-card *ngIf="lastAttendance; else noAttendance">
+        <ion-card-header>
+          <ion-card-title>Última clase atendida</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p><strong>Sección:</strong> {{ lastAttendance.sectionName }}</p>
+          <p><strong>Fecha:</strong> {{ lastAttendance.timestamp?.toDate() | date: 'shortDate' }}</p>
+          <p><strong>Hora:</strong> {{ lastAttendance.timestamp?.toDate() | date: 'shortTime' }}</p>
+        </ion-card-content>
+      </ion-card>
+  
+      <ng-template #noAttendance>
+        <ion-card>
+          <ion-card-content>
+            <p>No tienes registros de asistencia todavía.</p>
+          </ion-card-content>
+        </ion-card>
+      </ng-template>
+    </div>
+  </ion-content>
 
   <ion-tabs>
     <ion-tab-bar slot="bottom">
-      <ion-tab-button tab="scan" routerLink="/scan">
+      <ion-tab-button tab="scan">
         <ion-icon name="camera"></ion-icon>
         <ion-label>Escanear QR</ion-label>
       </ion-tab-button>
 
-      <ion-tab-button tab="profile" routerLink="/user">
+      <ion-tab-button tab="user">
         <ion-icon name="person"></ion-icon>
         <ion-label>Perfil</ion-label>
       </ion-tab-button>

@@ -29,10 +29,7 @@ const routes: Routes = [
     path: 'elegir',
     loadChildren: () => import('./pages/formularios/elegir/elegir.module').then( m => m.ElegirPageModule)
   },
-  {
-    path: 'user',
-    loadChildren: () => import('./pages/perfiles/user/user.module').then( m => m.UserPageModule)
-  },
+,
   {
     path: 'admin',
     loadChildren: () => import('./pages/perfiles/admin/admin.module').then( m => m.AdminPageModule)
@@ -66,10 +63,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/funcionalidades/scanner/scanner.module').then( m => m.ScannerPageModule)
   },
   {
-    path: 'scan',
-    loadChildren: () => import('./pages/menus/scan/scan.module').then( m => m.ScanPageModule)
-  },
-  {
     path: 'horario',
     loadChildren: () => import('./pages/menus/horario/horario.module').then( m => m.HorarioPageModule)
   },
@@ -82,7 +75,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules, })
   ],
   exports: [RouterModule]
 })

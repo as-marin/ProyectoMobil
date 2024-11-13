@@ -3,6 +3,12 @@ import { NavController } from '@ionic/angular';
 import { UtilsService } from 'src/app/services/utils.service'; 
 import { FireService } from 'src/app/services/fire.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { DatePipe } from '@angular/common';
+
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore'; 
+
+
 
 @Component({
   selector: 'app-teacher',
@@ -21,10 +27,12 @@ export class TeacherPage implements OnInit {
     private navCtrl: NavController,
     private utilservice: UtilsService,
     private fireService: FireService,
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
+    private datePipe: DatePipe
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.fireService.setPersistence(); // Configura la persistencia de sesión.
     this.user = this.utilservice.getFromLocalStorage('user');
     this.firestore.collection('sections').snapshotChanges().subscribe((sections) => {
       this.sections = sections.map((section: any) => {
@@ -37,13 +45,56 @@ export class TeacherPage implements OnInit {
 
   loadAttendanceDates(sectionId: string) {
     this.firestore.collection(`sections/${sectionId}/attendance`).snapshotChanges().subscribe((attendanceDates) => {
-      this.attendanceDates = attendanceDates.map((date: any) => {
-        const data = date.payload.doc.data();
-        return { date: date.payload.doc.id, students: data };
+      this.attendanceDates = [];
+  
+      attendanceDates.forEach((attendance: any) => {
+        const data = attendance.payload.doc.data();
+        const attendanceDate = attendance.payload.doc.id;  // La fecha del documento (dd-MM-yyyy)
+  
+        let classTime: Date | null = null;
+  
+        // Verificamos los estudiantes y sus datos de inscripción
+        for (const email in data) {
+          if (data.hasOwnProperty(email)) {
+            const studentData = data[email]; // Datos del estudiante con correo 'email'
+            
+            // Ahora buscamos el timestamp dentro de los datos del estudiante
+            const timestamp = studentData.timestamp;
+  
+            if (timestamp && timestamp instanceof firebase.firestore.Timestamp) {
+              // Convertimos el timestamp a un objeto Date
+              const dateObj = timestamp.toDate();
+  
+              // Tomamos el primer timestamp encontrado (esto puede ser optimizado si necesitas tomar la hora más reciente)
+              if (!classTime) {
+                classTime = dateObj; // Asignamos el primer timestamp encontrado
+              }
+            }
+          }
+        }
+  
+        // Si encontramos un timestamp válido para la fecha, lo agregamos a la lista
+        if (classTime) {
+          this.attendanceDates.push({
+            date: attendanceDate,        // La fecha principal del documento (dd-MM-yyyy)
+            classTime: classTime,        // Fecha convertida desde el timestamp
+          });
+        } else {
+          console.log(`Timestamp no encontrado para la fecha: ${attendanceDate}`);
+        }
       });
-      console.log('Fechas de asistencia para la sección:', this.attendanceDates); // Verifica que las fechas se carguen correctamente
+  
+      console.log('Fechas de asistencia con timestamp:', this.attendanceDates); // Verificamos que las fechas se estén cargando correctamente
     });
   }
+
+  
+  
+  
+  
+  
+
+  
 
   loadStudentsForDate(sectionId: string, date: string) {
     this.firestore.collection(`sections/${sectionId}/attendance`).doc(date).get().subscribe((attendance) => {

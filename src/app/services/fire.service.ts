@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile,sendPasswordResetEmail, } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile,sendPasswordResetEmail, browserLocalPersistence } from "firebase/auth";
 import { User } from '../models/usuario.model';
 import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { getFirestore,setDoc,doc, getDoc } from "@angular/fire/firestore";
@@ -15,6 +15,9 @@ export class FireService {
 
   auth = inject(AngularFireAuth);
   firestore = inject(AngularFirestore)
+
+
+
 
 
   getUserData() {
@@ -67,4 +70,16 @@ export class FireService {
   async getDocument(path: string) {
      return (await getDoc(doc(getFirestore(),path))).data();
   }
+
+  getUserRole(userId: string) {
+    return this.firestore.collection('users').doc(userId).valueChanges();
+  }
+
+  async setPersistence() {
+    const auth = getAuth();
+    await auth.setPersistence(browserLocalPersistence);
+  }
+
 }
+
+

@@ -1,15 +1,20 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Generate QR Code</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Generar QR</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <form [formGroup]="classForm">
+<ion-content class="ion-padding">
+  <form [formGroup]="classForm" class="form-container">
     <!-- Dropdown for selecting a section -->
     <ion-item>
-      <ion-label>Section</ion-label>
-      <ion-select formControlName="section" placeholder="Select a section">
+      <ion-label>Secciones</ion-label>
+      <ion-select formControlName="section" placeholder="Seleccione una Sección">
         <ion-select-option *ngFor="let section of sections" [value]="section.id">
           {{ section.name }}
         </ion-select-option>
@@ -17,7 +22,9 @@
     </ion-item>
 
     <!-- Button to generate the QR code -->
-    <ion-button expand="block" (click)="generateQrCode()">Generate QR Code</ion-button>
+    <ion-button expand="block" (click)="generateQrCode()" class="generate-button">
+      Generar Código QR
+    </ion-button>
   </form>
 
   <!-- Display the QR code if qrCodeData is generated -->

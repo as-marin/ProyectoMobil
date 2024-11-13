@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -15,6 +16,7 @@ import { TeacherPage } from './teacher.page';
     IonicModule,
     TeacherPageRoutingModule
   ],
-  declarations: [TeacherPage]
+  declarations: [TeacherPage],
+   providers: [ DatePipe ]
 })
 export class TeacherPageModule {}
