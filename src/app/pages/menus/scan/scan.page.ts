@@ -14,7 +14,7 @@ import { NavController } from '@ionic/angular';
 })
 export class ScanPage implements OnInit {
 
-  private allowedRange = 10; // Rango permitido en metros
+  private allowedRange = 60; // Rango permitido en metros
   isSupported = false;
   barcodes: Barcode[] = [];
   studentData: any; // Reemplazar el valor inicial con datos del estudiante logueado
