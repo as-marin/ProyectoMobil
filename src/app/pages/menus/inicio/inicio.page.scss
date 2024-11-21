@@ -26,6 +26,15 @@
   background-color: var(--dark-surface);
 }
 
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: 0 4px 8px rgba(132, 14, 14, 0.733);
+  color: var(--text-primary);
+}
+
 // Shared Container Styles
 .container {
   margin-bottom: 20px;
@@ -37,7 +46,7 @@
 // Welcome Card Styles
 .welcome-card {
   @include flexible-card;
-  background-color: var(--primary-color);
+  background-color: hsl(212, 70%, 10%);
   color: var(--secondary-color);
   text-align: center;
 
@@ -72,22 +81,6 @@ ion-card {
   left: 16px;
   right: 16px;
   z-index: 10;
-}
-
-// Header Styles
-ion-toolbar {
-  --background: var(--dark-surface);
-  --color: var(--text-primary);
-
-  ion-title {
-    font-weight: 400;
-    font-size: 1.1rem;
-  }
-
-  ion-button[color="danger"] {
-    --background: #dc3545;
-    margin: 0;
-  }
 }
 
 // Profile Container

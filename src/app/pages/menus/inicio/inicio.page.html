@@ -1,11 +1,9 @@
 <ion-content class="ion-padding" [fullscreen]="true">
-  <div class="welcome-container">
     <ion-card *ngIf="user" class="welcome-card">
       <ion-card-content>
-        <h2>Bienvenido, {{ user.nombre }}</h2>
+        <h2>Bienvenido {{ user.nombre }}</h2>
       </ion-card-content>
     </ion-card>
-  </div>
 
     <div class="attendance-container">
       <ion-card *ngIf="lastAttendance; else noAttendance">
