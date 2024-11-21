@@ -1,9 +1,3 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title></ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="ion-padding" [fullscreen]="true">
   <div class="welcome-container">
     <ion-card *ngIf="user" class="welcome-card">
@@ -33,14 +27,25 @@
         </ion-card>
       </ng-template>
     </div>
-    <!--<ion-list> *****FUTURA FEATURE*****
-      <ion-button 
-      *ngFor="let subject of subjects" 
-      (click)="onSectionSelect(section.id)" 
-      [class.selected]="selectedSection === section.id">
-      {{ section.name }}
-    </ion-button>
-    </ion-list>-->
+    <div class="ion-text-center">
+      <ion-card class="ion-padding">
+        <ion-card-header>
+          <ion-card-subtitle>***user.carrera***</ion-card-subtitle>
+          <ion-card-title>Asistencia por ramo</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          No tienes ningun ramo inscrito aun.
+          <!--
+          <ion-list> *****FUTURA FEATURE*****
+            <ion-button *ngFor="let subject of subjects" (click)="onSectionSelect(section.id)" 
+            [class.selected]="selectedSection === section.id">
+            {{ section.name }}
+            </ion-button>
+          </ion-list>
+          -->
+        </ion-card-content>
+      </ion-card>
+    </div>
 
   <ion-tabs>
     <ion-tab-bar slot="bottom">
