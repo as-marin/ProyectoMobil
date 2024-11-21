@@ -52,6 +52,13 @@
                 </ion-input>
                 <ion-icon slot="start" name="lock-closed-outline"></ion-icon>
               </ion-item>
+              <ion-item>
+                <ion-label>Rol</ion-label>
+                <ion-select formControlName="role" placeholder="Seleccione un rol">
+                  <ion-select-option value="estudiante">Estudiante</ion-select-option>
+                  <ion-select-option value="profesor">Profesor</ion-select-option>
+                </ion-select>
+              </ion-item>
             </ion-list>
             <ion-button               expand="block"
             type="submit"

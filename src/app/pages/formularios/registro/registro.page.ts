@@ -28,7 +28,7 @@ export class RegistroPage implements OnInit {
     password:new FormControl('', [Validators.required]),
     nombre:new FormControl('', [Validators.required]),
     apellido:new FormControl('', [Validators.required]),
-    role: new FormControl('estudiante', [Validators.required])
+    role: new FormControl('', [Validators.required])
     
   });
 

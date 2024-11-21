@@ -1,10 +1,10 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title> </ion-title>
+    <ion-title></ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
   <div class="welcome-container">
     <ion-card *ngIf="user" class="welcome-card">
       <ion-card-content>
@@ -13,28 +13,26 @@
     </ion-card>
   </div>
 
-  <ion-content class="ion-padding">
-    <div class="attendance-container">
-      <ion-card *ngIf="lastAttendance; else noAttendance">
-        <ion-card-header>
-          <ion-card-title>Última clase atendida</ion-card-title>
-        </ion-card-header>
+  <div class="attendance-container">
+    <ion-card *ngIf="lastAttendance; else noAttendance">
+      <ion-card-header>
+        <ion-card-title>Última clase atendida</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Sección:</strong> {{ lastAttendance.sectionName }}</p>
+        <p><strong>Fecha:</strong> {{ lastAttendance.timestamp?.toDate() | date: 'shortDate' }}</p>
+        <p><strong>Hora:</strong> {{ lastAttendance.timestamp?.toDate() | date: 'shortTime' }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <ng-template #noAttendance>
+      <ion-card>
         <ion-card-content>
-          <p><strong>Sección:</strong> {{ lastAttendance.sectionName }}</p>
-          <p><strong>Fecha:</strong> {{ lastAttendance.timestamp?.toDate() | date: 'shortDate' }}</p>
-          <p><strong>Hora:</strong> {{ lastAttendance.timestamp?.toDate() | date: 'shortTime' }}</p>
+          <p>No tienes registros de asistencia todavía.</p>
         </ion-card-content>
       </ion-card>
-  
-      <ng-template #noAttendance>
-        <ion-card>
-          <ion-card-content>
-            <p>No tienes registros de asistencia todavía.</p>
-          </ion-card-content>
-        </ion-card>
-      </ng-template>
-    </div>
-  </ion-content>
+    </ng-template>
+  </div>
 
   <ion-tabs>
     <ion-tab-bar slot="bottom">
