@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FireService } from '../../../services/fire.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { UtilsService } from 'src/app/services/utils.service';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-inicio',
@@ -15,8 +16,14 @@ export class InicioPage implements OnInit {
   constructor(
     private fireService: FireService, 
     private firestore: AngularFirestore,
-    private utilservice: UtilsService
+    private utilservice: UtilsService,
+    private menuCtrl: MenuController
   ) {}
+
+  ionViewWillEnter() {
+    // Desactiva la barra lateral
+    this.menuCtrl.enable(false);
+  }
 
   async ngOnInit() {
     this.user = this.utilservice.getFromLocalStorage('user');
@@ -40,7 +47,6 @@ export class InicioPage implements OnInit {
   }
 
   fetchLastAttendance(uid: string, email: string) {
-   
     
     // Primero, obtenemos las secciones
     this.firestore.collection('sections').snapshotChanges().subscribe(sections => {

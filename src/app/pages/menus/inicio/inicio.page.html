@@ -4,7 +4,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content class="ion-padding" [fullscreen]="true">
   <div class="welcome-container">
     <ion-card *ngIf="user" class="welcome-card">
       <ion-card-content>
@@ -13,7 +13,6 @@
     </ion-card>
   </div>
 
-  <ion-content class="ion-padding">
     <div class="attendance-container">
       <ion-card *ngIf="lastAttendance; else noAttendance">
         <ion-card-header>
@@ -34,7 +33,14 @@
         </ion-card>
       </ng-template>
     </div>
-  </ion-content>
+    <!--<ion-list> *****FUTURA FEATURE*****
+      <ion-button 
+      *ngFor="let subject of subjects" 
+      (click)="onSectionSelect(section.id)" 
+      [class.selected]="selectedSection === section.id">
+      {{ section.name }}
+    </ion-button>
+    </ion-list>-->
 
   <ion-tabs>
     <ion-tab-bar slot="bottom">
