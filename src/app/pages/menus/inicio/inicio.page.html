@@ -4,7 +4,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding" [fullscreen]="true">
   <div class="welcome-container">
     <ion-card *ngIf="user" class="welcome-card">
       <ion-card-content>
@@ -13,26 +13,34 @@
     </ion-card>
   </div>
 
-  <div class="attendance-container">
-    <ion-card *ngIf="lastAttendance; else noAttendance">
-      <ion-card-header>
-        <ion-card-title>Última clase atendida</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p><strong>Sección:</strong> {{ lastAttendance.sectionName }}</p>
-        <p><strong>Fecha:</strong> {{ lastAttendance.timestamp?.toDate() | date: 'shortDate' }}</p>
-        <p><strong>Hora:</strong> {{ lastAttendance.timestamp?.toDate() | date: 'shortTime' }}</p>
-      </ion-card-content>
-    </ion-card>
-
-    <ng-template #noAttendance>
-      <ion-card>
+    <div class="attendance-container">
+      <ion-card *ngIf="lastAttendance; else noAttendance">
+        <ion-card-header>
+          <ion-card-title>Última clase atendida</ion-card-title>
+        </ion-card-header>
         <ion-card-content>
-          <p>No tienes registros de asistencia todavía.</p>
+          <p><strong>Sección:</strong> {{ lastAttendance.sectionName }}</p>
+          <p><strong>Fecha:</strong> {{ lastAttendance.timestamp?.toDate() | date: 'shortDate' }}</p>
+          <p><strong>Hora:</strong> {{ lastAttendance.timestamp?.toDate() | date: 'shortTime' }}</p>
         </ion-card-content>
       </ion-card>
-    </ng-template>
-  </div>
+  
+      <ng-template #noAttendance>
+        <ion-card>
+          <ion-card-content>
+            <p>No tienes registros de asistencia todavía.</p>
+          </ion-card-content>
+        </ion-card>
+      </ng-template>
+    </div>
+    <!--<ion-list> *****FUTURA FEATURE*****
+      <ion-button 
+      *ngFor="let subject of subjects" 
+      (click)="onSectionSelect(section.id)" 
+      [class.selected]="selectedSection === section.id">
+      {{ section.name }}
+    </ion-button>
+    </ion-list>-->
 
   <ion-tabs>
     <ion-tab-bar slot="bottom">
