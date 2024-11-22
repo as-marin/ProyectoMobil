@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
-import { UtilsService } from 'src/app/services/utils.service'; 
+import { NavController, AlertController } from '@ionic/angular';
+import { UtilsService } from 'src/app/services/utils.service';
 import { FireService } from 'src/app/services/fire.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { DatePipe } from '@angular/common';
 
 import firebase from 'firebase/compat/app';
-import 'firebase/compat/firestore'; 
-
-
+import 'firebase/compat/firestore';
 
 @Component({
   selector: 'app-teacher',
@@ -22,86 +20,73 @@ export class TeacherPage implements OnInit {
   attendanceDates: any[] = [];
   selectedDate: string = '';
   studentsForDate: any[] = [];
+  newSectionName: string = ''; // Para capturar el nombre de la nueva sección
 
   constructor(
     private navCtrl: NavController,
     private utilservice: UtilsService,
     private fireService: FireService,
     private firestore: AngularFirestore,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private alertController: AlertController // Agregado para la confirmación
   ) {}
 
   async ngOnInit() {
-    await this.fireService.setPersistence(); // Configura la persistencia de sesión.
+    await this.fireService.setPersistence();
     this.user = this.utilservice.getFromLocalStorage('user');
     this.firestore.collection('sections').snapshotChanges().subscribe((sections) => {
       this.sections = sections.map((section: any) => {
         const data = section.payload.doc.data();
         return { id: section.payload.doc.id, name: data.name };
       });
-      console.log('Secciones cargadas:', this.sections); // Verifica que las secciones están llegando
+      console.log('Secciones cargadas:', this.sections);
     });
   }
 
   loadAttendanceDates(sectionId: string) {
     this.firestore.collection(`sections/${sectionId}/attendance`).snapshotChanges().subscribe((attendanceDates) => {
       this.attendanceDates = [];
-  
+
       attendanceDates.forEach((attendance: any) => {
         const data = attendance.payload.doc.data();
-        const attendanceDate = attendance.payload.doc.id;  // La fecha del documento (dd-MM-yyyy)
-  
+        const attendanceDate = attendance.payload.doc.id;
+
         let classTime: Date | null = null;
-  
-        // Verificamos los estudiantes y sus datos de inscripción
+
         for (const email in data) {
           if (data.hasOwnProperty(email)) {
-            const studentData = data[email]; // Datos del estudiante con correo 'email'
-            
-            // Ahora buscamos el timestamp dentro de los datos del estudiante
+            const studentData = data[email];
             const timestamp = studentData.timestamp;
-  
+
             if (timestamp && timestamp instanceof firebase.firestore.Timestamp) {
-              // Convertimos el timestamp a un objeto Date
               const dateObj = timestamp.toDate();
-  
-              // Tomamos el primer timestamp encontrado (esto puede ser optimizado si necesitas tomar la hora más reciente)
               if (!classTime) {
-                classTime = dateObj; // Asignamos el primer timestamp encontrado
+                classTime = dateObj;
               }
             }
           }
         }
-  
-        // Si encontramos un timestamp válido para la fecha, lo agregamos a la lista
+
         if (classTime) {
           this.attendanceDates.push({
-            date: attendanceDate,        // La fecha principal del documento (dd-MM-yyyy)
-            classTime: classTime,        // Fecha convertida desde el timestamp
+            date: attendanceDate,
+            classTime: classTime,
           });
         } else {
           console.log(`Timestamp no encontrado para la fecha: ${attendanceDate}`);
         }
       });
-  
-      console.log('Fechas de asistencia con timestamp:', this.attendanceDates); // Verificamos que las fechas se estén cargando correctamente
+
+      console.log('Fechas de asistencia con timestamp:', this.attendanceDates);
     });
   }
-
-  
-  
-  
-  
-  
-
-  
 
   loadStudentsForDate(sectionId: string, date: string) {
     this.firestore.collection(`sections/${sectionId}/attendance`).doc(date).get().subscribe((attendance) => {
       if (attendance.exists) {
         const students = attendance.data();
         this.studentsForDate = Object.values(students);
-        console.log('Estudiantes para la fecha:', this.studentsForDate); // Verifica que los estudiantes se carguen
+        console.log('Estudiantes para la fecha:', this.studentsForDate);
       } else {
         this.studentsForDate = [];
         console.log('No hay estudiantes para esta fecha');
@@ -109,26 +94,79 @@ export class TeacherPage implements OnInit {
     });
   }
 
-  // Seleccionar una sección
   onSectionSelect(sectionId: string) {
-    // Restablecer la fecha y los estudiantes de la sección anterior
-    this.selectedDate = '';  // Limpiar la fecha seleccionada
-    this.studentsForDate = []; // Limpiar los estudiantes
-  
-    // Establecer la nueva sección seleccionada
+    this.selectedDate = '';
+    this.studentsForDate = [];
     this.selectedSection = sectionId;
-  
-    // Cargar las fechas de asistencia para la nueva sección seleccionada
     this.loadAttendanceDates(sectionId);
   }
 
-  // Seleccionar una fecha
   onDateSelect(date: string) {
-    // Establecer la nueva fecha seleccionada
     this.selectedDate = date;
-  
-    // Cargar los estudiantes que asistieron en la nueva fecha seleccionada
     this.loadStudentsForDate(this.selectedSection, date);
+  }
+
+  async createSection(sectionName: string) {
+    if (!sectionName) {
+      console.error('El nombre de la sección no puede estar vacío.');
+      return;
+    }
+  
+    try {
+      const sectionId = this.firestore.createId(); // Crear un ID único para la sección
+      const sectionPath = `sections/${sectionId}`;
+  
+      // Crear la nueva sección con el campo `sectionID` igual al nombre de la sección
+      const newSection = {
+        id: sectionId,
+        name: sectionName,
+        professor: this.user.nombre, // Asignar el nombre del profesor actual
+        sectionID: sectionName, // Campo sectionID igual al nombre de la sección
+      };
+  
+      await this.firestore.doc(sectionPath).set(newSection); // Guardar el documento en Firestore
+  
+      // Crear la subcolección `attendance` vacía dentro de la sección
+      const attendancePath = `${sectionPath}/attendance`;
+      await this.firestore.doc(`${attendancePath}/init`).set({}); // Crear un documento vacío para inicializar la colección
+  
+      console.log(`Sección '${sectionName}' creada con éxito.`);
+      this.newSectionName = ''; // Limpiar el campo después de crear la sección
+    } catch (error) {
+      console.error('Error al crear la sección:', error);
+    }
+  }
+  
+
+  async confirmCreateSection() {
+    if (!this.newSectionName) {
+      console.error('El nombre de la sección no puede estar vacío.');
+      return;
+    }
+  
+    const alert = await this.alertController.create({
+      header: 'Confirmar',
+      message: `¿Estás seguro de que deseas crear la sección "${this.newSectionName}"?`,
+      cssClass: 'custom-alert', // Clase CSS personalizada
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Creación de sección cancelada');
+          },
+        },
+        {
+          text: 'Crear',
+          cssClass: 'alert-button-confirm', // Clase CSS personalizada para el botón
+          handler: () => {
+            this.createSection(this.newSectionName);
+          },
+        },
+      ],
+    });
+  
+    await alert.present();
   }
 
   goBack() {
@@ -137,8 +175,8 @@ export class TeacherPage implements OnInit {
 
   async logout() {
     await this.fireService.logout();
-    this.utilservice.clearLocalStorage(); // Limpia los datos locales
-    this.navCtrl.navigateRoot('/login'); // Redirige al login
+    this.utilservice.clearLocalStorage();
+    this.navCtrl.navigateRoot('/login');
   }
 
   viewUserDetails(user: any) {

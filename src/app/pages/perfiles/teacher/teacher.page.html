@@ -16,7 +16,7 @@
           <img src="https://www.gravatar.com/avatar?d=identicon">
         </ion-avatar>
         <ion-label>
-          <h1 *ngIf="user">{{user.name}} {{user.apellido}}</h1>
+          <h1 *ngIf="user">{{user.nombre}} {{user.apellido}}</h1>
           <p>Profesor</p>
         </ion-label>
       </ion-item>
@@ -27,43 +27,51 @@
       <ion-label>Sede Monte Olimpo</ion-label>
     </ion-item>
 
-    
+    <!-- Campo para agregar nueva sección -->
+    <ion-item>
+      <ion-input
+        type="text"
+        placeholder="Nombre de la nueva sección"
+        [(ngModel)]="newSectionName"
+      ></ion-input>
+      <ion-button slot="end" (click)="confirmCreateSection()" color="primary">
+        Crear Sección
+      </ion-button>
+    </ion-item>
   </div>
 
-
   <!-- Sección de clases -->
-  <ion-list>
-    <ion-button 
-    *ngFor="let section of sections" 
-    (click)="onSectionSelect(section.id)" 
-    [class.selected]="selectedSection === section.id">
-    {{ section.name }}
-  </ion-button>
+  <ion-list class="section-container">
+    <button
+      *ngFor="let section of sections"
+      (click)="onSectionSelect(section.id)"
+      class="section-button">
+      {{ section.name }}
+    </button>
   </ion-list>
+  
 
-<!-- Fechas de asistencia -->
-<ion-list *ngIf="selectedSection">
-  <ion-item *ngFor="let date of attendanceDates" (click)="onDateSelect(date.date)">
-    <ion-label>
-      {{ date.date }} 
-      <span *ngIf="date.classTime">
-        - {{ date.classTime | date: '' }} <!-- Mostramos la fecha y la hora -->
-      </span>
-    </ion-label>
-  </ion-item>
-</ion-list>
+  <!-- Fechas de asistencia -->
+  <ion-list *ngIf="selectedSection">
+    <ion-item *ngFor="let date of attendanceDates" (click)="onDateSelect(date.date)">
+      <ion-label>
+        {{ date.date }}
+        <span *ngIf="date.classTime">
+          - {{ date.classTime | date: '' }}
+        </span>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 
   <!-- Estudiantes para la fecha seleccionada -->
   <ion-list *ngIf="selectedDate">
     <ion-item *ngFor="let student of studentsForDate">
       <ion-label>{{ student.nombre }} {{ student.apellido }} ({{ student.email }})</ion-label>
     </ion-item>
-  </ion-list> 
-
+  </ion-list>
 
   <ion-button expand="full" color="primary" routerLink="/scanner" class="bottom-button">
     <ion-icon name="qr-code-outline"></ion-icon>
     <ion-label>Mostrar QR</ion-label>
   </ion-button>
-  
 </ion-content>

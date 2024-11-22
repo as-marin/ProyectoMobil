@@ -13,12 +13,12 @@ import { Network } from '@capacitor/network';
   styleUrls: ['./scan.page.scss'],
 })
 export class ScanPage implements OnInit {
-
   private allowedRange = 60; // Rango permitido en metros
   isSupported = false;
   barcodes: Barcode[] = [];
   studentData: any; // Reemplazar el valor inicial con datos del estudiante logueado
   scannedQrData: any;
+  isOnline: boolean = true; // Estado de conexión
 
   constructor(
     private alertController: AlertController,
@@ -33,8 +33,6 @@ export class ScanPage implements OnInit {
       this.isSupported = result.supported;
     });
 
-    this.isWithinAllowedRange();
-
     // Cargar los datos del estudiante logueado
     this.studentData = this.utilService.getFromLocalStorage('user');
 
@@ -44,16 +42,19 @@ export class ScanPage implements OnInit {
 
   async checkNetworkStatus() {
     const status = await Network.getStatus();
-    if (status.connected) {
+    this.isOnline = status.connected;
+
+    if (this.isOnline) {
       console.log('Conexión disponible, sincronizando datos...');
       await this.syncOfflineData();
     } else {
       console.log('Sin conexión, operando en modo offline...');
     }
 
-    // Escuchar cambios de conexión
+    // Escuchar cambios en el estado de conexión
     Network.addListener('networkStatusChange', async (status) => {
-      if (status.connected) {
+      this.isOnline = status.connected;
+      if (this.isOnline) {
         console.log('Conexión restablecida, sincronizando datos...');
         await this.syncOfflineData();
       }
@@ -86,34 +87,26 @@ export class ScanPage implements OnInit {
 
   async isWithinAllowedRange() {
     try {
-      // Paso 1: Obtener la posición actual del estudiante
       const { studentLatitude, studentLongitude } = await this.getCurrentPosition();
-  
-      // Paso 2: Escanear el QR
       const scannedQrData = await this.scan();
-  
-      if (!scannedQrData) {
-        return;
-      }
-  
-      // Paso 3: Extraer las coordenadas del profesor desde el QR
+
+      if (!scannedQrData) return;
+
       const profeLatitude = scannedQrData.profeLatitude;
       const profeLongitude = scannedQrData.profeLongitude;
-  
+
       if (profeLatitude === undefined || profeLongitude === undefined) {
         await this.presentAlert('Error', 'El QR no contiene coordenadas válidas del profesor.');
         return;
       }
-  
-      // Paso 4: Calcular la distancia entre el estudiante y el profesor
+
       const distance = this.getDistanceFromLatLonInMeters(
         profeLatitude,
         profeLongitude,
         studentLatitude,
         studentLongitude
       );
-  
-      // Paso 5: Verificar si está dentro del rango permitido
+
       if (distance <= this.allowedRange) {
         console.log("Estás dentro del rango permitido. Puedes registrar la asistencia.");
         await this.saveAttendance(scannedQrData.sectionId, scannedQrData.classDate);
@@ -126,30 +119,30 @@ export class ScanPage implements OnInit {
       await this.presentAlert('Error', 'Ocurrió un error al intentar escanear el QR o obtener la ubicación.');
     }
   }
-  
+
   async scan(): Promise<any> {
     const granted = await this.requestPermissions();
     if (!granted) {
       this.presentAlert('Permiso denegado', 'Para usar la aplicación autorizar los permisos de cámara');
       return null;
     }
-  
+
     const { barcodes } = await BarcodeScanner.scan();
     if (barcodes.length > 0) {
       try {
         const qrData = JSON.parse(barcodes[0].displayValue);
         const { sectionId, classDate, profeLatitude, profeLongitude } = qrData;
-  
+
         const currentDate = new Date();
         const classDateParts = classDate.split('-');
         const classDateObj = new Date(Number(classDateParts[2]), Number(classDateParts[1]) - 1, Number(classDateParts[0]));
-  
+
         if (classDateObj.toDateString() !== currentDate.toDateString()) {
           console.log("La clase no está programada para hoy.");
           await this.presentAlert('Fecha inválida', 'El código QR no corresponde a la clase de hoy.');
           return null;
         }
-  
+
         return { sectionId, classDate, profeLatitude, profeLongitude };
       } catch (error) {
         console.error("Error al procesar el código QR:", error);
@@ -173,9 +166,7 @@ export class ScanPage implements OnInit {
 
       const attendancePath = `sections/${sectionId}/attendance`;
 
-      const status = await Network.getStatus();
-
-      if (status.connected) {
+      if (this.isOnline) {
         await this.firestore.collection(attendancePath).doc(classDate).set(attendanceData, { merge: true });
         console.log('Asistencia registrada con éxito.');
         await this.presentAlert('Éxito', 'Asistencia registrada.');

@@ -1,16 +1,32 @@
 <ion-header>
   <ion-toolbar>
-    <ion-button (click)="goBack()">
-      <ion-icon name="arrow-back"></ion-icon>
-    </ion-button>
-    <ion-title size="large">Error intentalo mas tarde</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Escaneo</ion-title>
+    <ion-buttons slot="end">
+      <ion-icon
+        [name]="isOnline ? 'cloud-done-outline' : 'cloud-offline-outline'"
+        [color]="isOnline ? 'success' : 'danger'"
+        title="{{ isOnline ? 'Conexión activa' : 'Sin conexión' }}">
+      </ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
-  <!--
-    <ion-content class="ion-padding">
-      <ion-button expand="full" (click)="isWithinAllowedRange()">
-        Iniciar Escaneo de Asistencia
-      </ion-button>
-    </ion-content>
-  -->
 
+<ion-content class="ion-padding">
+  <div *ngIf="!isOnline" class="offline-alert">
+    <ion-card color="danger">
+      <ion-card-content>
+        <ion-icon name="cloud-offline-outline"></ion-icon>
+        <p>Estás en modo offline. Los datos se guardarán localmente.</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <ion-button expand="full" (click)="isWithinAllowedRange()">
+    Iniciar Escaneo de Asistencia
+  </ion-button>
+</ion-content>

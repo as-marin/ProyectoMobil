@@ -3,6 +3,7 @@ import { FireService } from '../../../services/fire.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { UtilsService } from 'src/app/services/utils.service';
 import { MenuController } from '@ionic/angular';
+import { firstValueFrom } from "rxjs";
 
 @Component({
   selector: 'app-inicio',
@@ -46,52 +47,82 @@ export class InicioPage implements OnInit {
     });
   }
 
-  fetchLastAttendance(uid: string, email: string) {
-    
-    // Primero, obtenemos las secciones
-    this.firestore.collection('sections').snapshotChanges().subscribe(sections => {
-      let lastRecord = null;
+  async fetchLastAttendance(uid: string, email: string) {
+    let lastRecord = null;
   
-      sections.forEach(section => {
+    // Sincroniza datos locales con Firestore antes de buscar
+    await this.syncOfflineData();
+  
+    // Obtiene todas las secciones
+    this.firestore.collection('sections').snapshotChanges().subscribe(async (sections) => {
+      const promises = [];
+  
+      sections.forEach((section) => {
         const sectionId = section.payload.doc.id;
-        const sectionData = section.payload.doc.data();  // Obtiene los datos de la sección
-        
+        const sectionData = section.payload.doc.data();
   
-        // Obtenemos todos los registros de asistencia de esta sección
-        this.firestore.collection(`sections/${sectionId}/attendance`).snapshotChanges().subscribe(attendanceRecords => {
-          attendanceRecords.forEach(record => {
-            const recordData = record.payload.doc.data();  // Aquí ya no es necesario asegurar el tipo de recordData
-            
+        // Agrega una promesa para procesar cada sección
+        promises.push(
+          new Promise<void>((resolve) => {
+            this.firestore
+              .collection(`sections/${sectionId}/attendance`)
+              .snapshotChanges()
+              .subscribe((attendanceRecords) => {
+                attendanceRecords.forEach((record) => {
+                  const recordData = record.payload.doc.data();
+                  if (recordData[email]) {
+                    const studentData = recordData[email];
   
-            // Accedemos a los datos de asistencia usando el email del estudiante
-            if (recordData[email]) {
-              const studentData = recordData[email];  // Accede a los datos del estudiante por email
-              
+                    // Convierte el timestamp si es string
+                    const timestamp =
+                      typeof studentData.timestamp === 'string'
+                        ? new Date(studentData.timestamp)
+                        : studentData.timestamp.toDate();
   
-              // Si encontramos un registro, lo asignamos como último registro
-              if (!lastRecord || (lastRecord.timestamp?.toDate() < studentData.timestamp?.toDate())) {
-                lastRecord = {
-                  sectionName: sectionData['name'],  // Nombre de la sección
-                  date: studentData['date'],  // Fecha de la asistencia
-                  timestamp: studentData['timestamp']  // Timestamp de la clase
-                };
-                
-              }
-            }
-          });
-  
-          // Una vez procesados todos los registros de asistencia de esta sección
-          if (lastRecord) {
-            this.lastAttendance = lastRecord;
-          }
-        });
+                    if (!lastRecord || (lastRecord.timestamp < timestamp)) {
+                      lastRecord = {
+                        sectionName: sectionData['name'],
+                        date: studentData['date'],
+                        timestamp: timestamp, // Asegúrate de almacenar un objeto Date
+                      };
+                    }
+                  }
+                });
+                resolve(); // Marca la sección como procesada
+              });
+          })
+        );
       });
   
-      if (!this.lastAttendance) {
-        
-        this.lastAttendance = null;
-      }
+      // Espera a que se procesen todas las secciones
+      await Promise.all(promises);
+  
+      // Una vez que todas las secciones han sido procesadas, actualiza `lastAttendance`
+      this.lastAttendance = lastRecord || null;
+      console.log('Última asistencia encontrada:', this.lastAttendance);
     });
+  }
+  
+  async syncOfflineData() {
+    const offlineData = JSON.parse(localStorage.getItem('offlineAttendance') || '[]');
+    if (offlineData.length === 0) {
+      console.log('No hay datos para sincronizar.');
+      return;
+    }
+  
+    for (const record of offlineData) {
+      try {
+        const { sectionId, classDate, attendanceData } = record;
+        const attendancePath = `sections/${sectionId}/attendance`;
+  
+        await this.firestore.collection(attendancePath).doc(classDate).set(attendanceData, { merge: true });
+        console.log(`Datos sincronizados para la sección ${sectionId}, fecha ${classDate}`);
+      } catch (error) {
+        console.error('Error al sincronizar datos:', error);
+      }
+    }
+  
+    localStorage.removeItem('offlineAttendance');
   }
   
 

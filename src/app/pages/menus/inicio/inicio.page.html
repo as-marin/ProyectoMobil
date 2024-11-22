@@ -12,10 +12,14 @@
         </ion-card-header>
         <ion-card-content>
           <p><strong>Sección:</strong> {{ lastAttendance.sectionName }}</p>
-          <p><strong>Fecha:</strong> {{ lastAttendance.timestamp?.toDate() | date: 'shortDate' }}</p>
-          <p><strong>Hora:</strong> {{ lastAttendance.timestamp?.toDate() | date: 'shortTime' }}</p>
+          <p><strong>Fecha:</strong> {{ lastAttendance.timestamp | date: 'shortDate' }}</p>
+          <p><strong>Hora:</strong> {{ lastAttendance.timestamp | date: 'shortTime' }}</p>
+          <p *ngIf="lastAttendance.sectionName === 'Datos offline'" style="color: orange;">
+            * Este registro fue guardado sin conexión.
+          </p>
         </ion-card-content>
       </ion-card>
+      
   
       <ng-template #noAttendance>
         <ion-card>
