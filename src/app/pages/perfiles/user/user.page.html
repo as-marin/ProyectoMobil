@@ -1,6 +1,5 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Mi Perfil</ion-title>
     <ion-button (click)="goBack()">
       <ion-icon name="arrow-back"></ion-icon>
     </ion-button>
@@ -14,12 +13,9 @@
   <div class="profile-container">
     <ion-list>
       <ion-item>
-        <ion-avatar slot="start">
-          <img src="https://www.gravatar.com/avatar?d=identicon">
-        </ion-avatar>
         <ion-label>
           <h1>{{user.nombre}}  {{user.apellido}}</h1>
-          <p>Estudiante</p>
+          <p>{{user.role}}</p>
         </ion-label>
       </ion-item>
     </ion-list>
