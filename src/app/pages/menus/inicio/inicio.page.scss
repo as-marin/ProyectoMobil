@@ -1,31 +1,16 @@
-// Theme Variables
-:root {
-  --primary-color: #002855;
-  --secondary-color: #FFCD00;
-  --text-primary: #333;
-  --text-secondary: #666;
-  --dark-surface: #1a1a2e;
-  --dark-bg: #16213e;
-  --border-color: rgba(255, 255, 255, 0.1);
+.value-text {
+  color: var(--secondary-color) !important;
 }
 
-// Dark Mode Support
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text-primary: #f4f4f4;
-    --text-secondary: #cccccc;
-  }
-}
-
-// Mixins
 @mixin flexible-card {
   max-width: 500px; // Responsive baseline size
-  width: 90%;
+
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.733);
   background-color: var(--dark-surface);
 }
 
+<<<<<<< Updated upstream
 // Shared Container Styles
 .container {
   margin-bottom: 20px;
@@ -35,6 +20,8 @@
 }
 
 // Welcome Card Styles
+=======
+>>>>>>> Stashed changes
 .welcome-card {
   @include flexible-card;
   background-color: var(--primary-color);
@@ -49,6 +36,7 @@
   }
 }
 
+<<<<<<< Updated upstream
 // Attendance Card Styles
 ion-card {
   @include flexible-card;
@@ -124,98 +112,39 @@ ion-toolbar {
 
 // Sede Section
 ion-item.sede-item {
+=======
+ion-item {
+>>>>>>> Stashed changes
   --background: transparent;
-  --padding-start: 16px;
-  --padding-end: 16px;
-  --min-height: 40px;
-
-  ion-label {
-    margin: 8px 0;
-
-    &:first-child {
-      color: var(--text-secondary);
-      margin-right: 8px;
-    }
-
-    &:last-child {
-      color: var(--text-primary);
-    }
+  --border-color: transparent;
+  
+  ion-icon {
+    font-size: 24px;
+    margin-right: 12px;
   }
 }
 
-// List Styles
 ion-list {
   background: transparent;
-  margin: 0;
   padding: 0;
-
-  ion-title {
-    color: var(--text-primary);
-    font-size: 1.1rem;
-    font-weight: 400;
-    padding: 16px;
-  }
-
-  .user-item {
-    --background: var(--dark-surface);
-    --padding-start: 16px;
-    --padding-end: 16px;
-    margin-bottom: 1px;
-
-    ion-avatar {
-      width: 48px;
-      height: 48px;
-      margin-right: 12px;
-    }
-
-    ion-label {
-      h2 {
-        color: var(--text-primary);
-        font-size: 0.95rem;
-        margin: 0;
-        font-weight: 400;
-      }
-
-      p {
-        color: var(--text-secondary);
-        font-size: 0.85rem;
-        margin-top: 4px;
-      }
-    }
-  }
 }
 
-// Tab Bar Styles
-ion-tab-bar {
-  --background: var(--dark-surface);
-  border-top: 1px solid var(--border-color);
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-
-  ion-tab-button {
-    --color: var(--text-secondary);
-
-    ion-icon {
-      font-size: 30px;
-      transition: transform 0.2s ease;
-
-      &:active {
-        transform: scale(1.1);
-      }
-    }
-
-    ion-label {
-      font-size: 0.8rem;
-      text-transform: none;
-    }
-  }
+ion-card-header {
+  border-bottom: 1px solid var(--border-color);
 }
 
-// Responsive Adjustments
-@media (min-width: 768px) {
-  .welcome-card,
-  ion-card {
-    max-width: 500px;
-  }
+ion-card-title {
+  color: var(--secondary-color) !important;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+// Update your global variables in app.scss or theme/variables.scss
+:root {
+  --ion-color-warning: #FFCD00;
+  --ion-color-warning-rgb: 255, 205, 0;
+  --ion-color-warning-contrast: #000000;
+  --ion-color-warning-contrast-rgb: 0, 0, 0;
+  --ion-color-warning-shade: #e0b400;
+  --ion-color-warning-tint: #ffd21a;
 }

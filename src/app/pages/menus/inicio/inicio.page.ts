@@ -3,6 +3,11 @@ import { FireService } from '../../../services/fire.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { UtilsService } from 'src/app/services/utils.service';
 import { MenuController } from '@ionic/angular';
+<<<<<<< Updated upstream
+=======
+import { firstValueFrom } from "rxjs";
+import { User } from '../../../models/usuario.model';
+>>>>>>> Stashed changes
 
 @Component({
   selector: 'app-inicio',
@@ -32,7 +37,7 @@ export class InicioPage implements OnInit {
 
     
     if (this.user?.uid) {
-      this.fetchLastAttendance(this.user.uid,this.user.email); // Asegúrate de pasar el UID correcto
+      this.fetchLastAttendance(this.user.uid,this.user.email); // Pasar el UID correcto
     } 
   }
 
@@ -87,9 +92,45 @@ export class InicioPage implements OnInit {
         });
       });
   
+<<<<<<< Updated upstream
       if (!this.lastAttendance) {
         
         this.lastAttendance = null;
+=======
+      // Espera a que se procesen todas las secciones
+      await Promise.all(promises);
+  
+      // Una vez que todas las secciones han sido procesadas, actualiza `lastAttendance`
+      this.lastAttendance = lastRecord || null;
+      console.log('Última asistencia encontrada:', this.lastAttendance);
+    });
+  }
+
+  async getAllSubjects(uid: String) {
+    if (uid !== null && uid !== undefined) {
+      const sections = await firstValueFrom(this.firestore.collection('sections').get());
+      return sections.docs.map((section) => ({ id: section.id}));
+    }
+    throw new Error('UID de usuario no proporcionado.');
+  }
+  
+  async syncOfflineData() {
+    const offlineData = JSON.parse(localStorage.getItem('offlineAttendance') || '[]');
+    if (offlineData.length === 0) {
+      console.log('No hay datos para sincronizar.');
+      return;
+    }
+  
+    for (const record of offlineData) {
+      try {
+        const { sectionId, classDate, attendanceData } = record;
+        const attendancePath = `sections/${sectionId}/attendance`;
+  
+        await this.firestore.collection(attendancePath).doc(classDate).set(attendanceData, { merge: true });
+        console.log(`Datos sincronizados para la sección ${sectionId}, fecha ${classDate}`);
+      } catch (error) {
+        console.error('Error al sincronizar datos:', error);
+>>>>>>> Stashed changes
       }
     });
   }
