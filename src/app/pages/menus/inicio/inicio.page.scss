@@ -10,18 +10,6 @@
   background-color: var(--dark-surface);
 }
 
-<<<<<<< Updated upstream
-// Shared Container Styles
-.container {
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-// Welcome Card Styles
-=======
->>>>>>> Stashed changes
 .welcome-card {
   @include flexible-card;
   background-color: var(--primary-color);
@@ -36,85 +24,7 @@
   }
 }
 
-<<<<<<< Updated upstream
-// Attendance Card Styles
-ion-card {
-  @include flexible-card;
-
-  ion-card-title {
-    font-size: 1.4rem;
-    font-weight: bold;
-    color: var(--primary-color);
-  }
-
-  ion-card-content p {
-    font-size: 1.1rem;
-    color: rgba(255, 204, 0, 0.9);
-  }
-}
-
-// Bottom Button
-.bottom-button {
-  position: fixed;
-  bottom: 16px;
-  left: 16px;
-  right: 16px;
-  z-index: 10;
-}
-
-// Header Styles
-ion-toolbar {
-  --background: var(--dark-surface);
-  --color: var(--text-primary);
-
-  ion-title {
-    font-weight: 400;
-    font-size: 1.1rem;
-  }
-
-  ion-button[color="danger"] {
-    --background: #dc3545;
-    margin: 0;
-  }
-}
-
-// Profile Container
-.profile-container {
-  ion-item:first-child {
-    --background: var(--dark-surface);
-    --padding-start: 16px;
-    --padding-end: 16px;
-    --inner-padding-end: 0;
-    border-bottom: 1px solid var(--border-color);
-
-    ion-avatar {
-      width: 48px;
-      height: 48px;
-      margin-right: 12px;
-    }
-
-    ion-label {
-      h1 {
-        font-size: 1.1rem;
-        color: var(--text-primary);
-        margin: 0;
-        font-weight: 400;
-      }
-
-      p {
-        color: var(--text-secondary);
-        font-size: 0.9rem;
-        margin-top: 4px;
-      }
-    }
-  }
-}
-
-// Sede Section
-ion-item.sede-item {
-=======
 ion-item {
->>>>>>> Stashed changes
   --background: transparent;
   --border-color: transparent;
   

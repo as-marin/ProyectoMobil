@@ -1,16 +1,3 @@
-<<<<<<< Updated upstream
-<ion-header>
-  <ion-toolbar>
-    <ion-title> </ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content class="ion-padding" [fullscreen]="true">
-  <div class="welcome-container">
-    <ion-card *ngIf="user" class="welcome-card">
-      <ion-card-content>
-        <h2>Bienvenido, {{ user.nombre }}</h2>
-=======
 <ion-content class="ion-padding">
   <!-- Welcome Section -->
   <ion-card *ngIf="user" class="welcome-card">
@@ -32,41 +19,10 @@
         <ion-button expand="block">
           Aqui
         </ion-button>
->>>>>>> Stashed changes
       </ion-card-content>
     </ion-card>
   </div>
 
-<<<<<<< Updated upstream
-    <div class="attendance-container">
-      <ion-card *ngIf="lastAttendance; else noAttendance">
-        <ion-card-header>
-          <ion-card-title>Última clase atendida</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <p><strong>Sección:</strong> {{ lastAttendance.sectionName }}</p>
-          <p><strong>Fecha:</strong> {{ lastAttendance.timestamp?.toDate() | date: 'shortDate' }}</p>
-          <p><strong>Hora:</strong> {{ lastAttendance.timestamp?.toDate() | date: 'shortTime' }}</p>
-        </ion-card-content>
-      </ion-card>
-  
-      <ng-template #noAttendance>
-        <ion-card>
-          <ion-card-content>
-            <p>No tienes registros de asistencia todavía.</p>
-          </ion-card-content>
-        </ion-card>
-      </ng-template>
-    </div>
-    <!--<ion-list> *****FUTURA FEATURE*****
-      <ion-button 
-      *ngFor="let subject of subjects" 
-      (click)="onSectionSelect(section.id)" 
-      [class.selected]="selectedSection === section.id">
-      {{ section.name }}
-    </ion-button>
-    </ion-list>-->
-=======
   <!-- Last Attended Class -->
   <div class="container">
     <ion-card>
@@ -82,7 +38,6 @@
               <ion-text class="ion-padding-start value-text">{{ lastAttendance.sectionName }}</ion-text>
             </ion-label>
           </ion-item>
->>>>>>> Stashed changes
 
           <ion-item>
             <ion-icon name="calendar-outline" slot="start" color="warning"></ion-icon>
