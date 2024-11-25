@@ -3,5 +3,9 @@
     "@ionic/angular/common",
     "@ionic/angular/standalone"
   ],
+<<<<<<< Updated upstream
   "java.configuration.updateBuildConfiguration": "automatic"
+=======
+  "java.configuration.updateBuildConfiguration": "interactive"
+>>>>>>> Stashed changes
 }
