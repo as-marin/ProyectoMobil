@@ -1,65 +1,101 @@
-<ion-content class="ion-padding" [fullscreen]="true">
-    <ion-card *ngIf="user" class="welcome-card">
+<ion-content class="ion-padding">
+  <!-- Welcome Section -->
+  <ion-card *ngIf="user" class="welcome-card">
+    <ion-card-content>
+      <h2>Bienvenido {{ user.nombre }}</h2>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Inscription Section -->
+  <div class="container" *ngIf="!lastAttendance.sectionName">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          Inscripción de ramos
+        </ion-card-title>
+      </ion-card-header>
       <ion-card-content>
-        <h2>Bienvenido {{ user.nombre }}</h2>
+        <!-- Add inscription form here -->
+        <ion-button expand="block">
+          Aqui
+        </ion-button>
       </ion-card-content>
     </ion-card>
 
-    <div class="attendance-container">
-      <ion-card *ngIf="lastAttendance; else noAttendance">
-        <ion-card-header>
-          <ion-card-title>Última clase atendida</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <p><strong>Sección:</strong> {{ lastAttendance.sectionName }}</p>
-          <p><strong>Fecha:</strong> {{ lastAttendance.timestamp | date: 'shortDate' }}</p>
-          <p><strong>Hora:</strong> {{ lastAttendance.timestamp | date: 'shortTime' }}</p>
-          <p *ngIf="lastAttendance.sectionName === 'Datos offline'" style="color: orange;">
-            * Este registro fue guardado sin conexión.
-          </p>
-        </ion-card-content>
-      </ion-card>
-      
-  
-      <ng-template #noAttendance>
-        <ion-card>
-          <ion-card-content>
-            <p>No tienes registros de asistencia todavía.</p>
-          </ion-card-content>
-        </ion-card>
-      </ng-template>
-    </div>
-    <div class="ion-text-center">
-      <ion-card class="ion-padding">
-        <ion-card-header>
-          <ion-card-subtitle>***user.carrera***</ion-card-subtitle>
-          <ion-card-title>Asistencia por ramo</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          No tienes ningun ramo inscrito aun.
-          <!--
-          <ion-list> *****FUTURA FEATURE*****
-            <ion-button *ngFor="let subject of subjects" (click)="onSectionSelect(section.id)" 
-            [class.selected]="selectedSection === section.id">
-            {{ section.name }}
-            </ion-button>
-          </ion-list>
-          -->
-        </ion-card-content>
-      </ion-card>
-    </div>
+  <!-- Last Attended Class -->
+  <div class="container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Última clase atendida</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list lines="none">
+          <ion-item>
+            <ion-icon name="book-outline" slot="start" color="warning"></ion-icon>
+            <ion-label>
+              <ion-text color="medium">Sección:</ion-text>
+              <ion-text class="ion-padding-start value-text">{{ lastAttendance.sectionName }}</ion-text>
+            </ion-label>
+          </ion-item>
 
-  <ion-tabs>
+          <ion-item>
+            <ion-icon name="calendar-outline" slot="start" color="warning"></ion-icon>
+            <ion-label>
+              <ion-text color="medium">Fecha:</ion-text>
+              <ion-text class="ion-padding-start value-text">{{ lastAttendance.timestamp | date: 'shortDate' }}</ion-text>
+            </ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-icon name="time-outline" slot="start" color="warning"></ion-icon>
+            <ion-label>
+              <ion-text color="medium">Hora:</ion-text>
+              <ion-text class="ion-padding-start value-text">{{ lastAttendance.timestamp | date: 'shortTime' }}</ion-text>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Attendance by Subject -->
+  <div class="container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Asistencia por ramo</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>***Todos los ramos inscritos***</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Bottom Navigation -->
+<ion-tabs>
+  <div slot="bottom">
     <ion-tab-bar slot="bottom">
-      <ion-tab-button tab="scan">
-        <ion-icon name="camera"></ion-icon>
-        <ion-label>Escanear QR</ion-label>
+      <ion-tab-button tab="scanner" routerLink="scan">
+        <ion-icon name="qr-code-outline" ></ion-icon>
+        <ion-label>Escanner QR</ion-label>
       </ion-tab-button>
-
-      <ion-tab-button tab="user">
-        <ion-icon name="person"></ion-icon>
+  
+      <ion-tab-button tab="profile" routerLink="user">
+        <ion-icon name="person-outline" ></ion-icon>
         <ion-label>Perfil</ion-label>
       </ion-tab-button>
     </ion-tab-bar>
-  </ion-tabs>
-</ion-content>
+
+  </div>
+</ion-tabs>
+
+<!-- <ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="scan" routerLink="scan">
+      <ion-icon name="camera"></ion-icon>
+      <ion-label>Escanear QR</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs> -->
+
+
+
