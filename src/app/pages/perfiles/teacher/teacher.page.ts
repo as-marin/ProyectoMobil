@@ -88,14 +88,6 @@ export class TeacherPage implements OnInit {
     });
   }
 
-  
-  
-  
-  
-  
-
-  
-
   loadStudentsForDate(sectionId: string, date: string) {
     this.firestore.collection(`sections/${sectionId}/attendance`).doc(date).get().subscribe((attendance) => {
       if (attendance.exists) {
