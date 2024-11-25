@@ -12,7 +12,7 @@
 
 .welcome-card {
   @include flexible-card;
-  background-color: hsl(212, 70%, 10%);
+  background-color: var(--primary-color);
   color: var(--secondary-color);
   text-align: center;
 
