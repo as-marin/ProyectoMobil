@@ -60,13 +60,16 @@
   </div>
 
   <!-- Attendance by Subject -->
-  <div class="container">
+   <!-- Utilización de sections, una lista armada a través de ts -->
+   <!-- Organización de las secciones en el párrafo a través del ngFor 
+    Ni siquiera está argando este div-->
+  <div class="container" *ngFor="let section of sections">
     <ion-card>
       <ion-card-header>
         <ion-card-title>Asistencia por ramo</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <p>***Todos los ramos inscritos***</p>
+        <p class="section">***Todos los ramos inscritos***</p>
       </ion-card-content>
     </ion-card>
   </div>
@@ -74,7 +77,7 @@
   <!-- Bottom Navigation -->
 <ion-tabs>
   <div slot="bottom">
-    <ion-tab-bar slot="bottom">
+    <ion-tab-bar>
       <ion-tab-button tab="scanner" routerLink="scan">
         <ion-icon name="qr-code-outline" ></ion-icon>
         <ion-label>Escanner QR</ion-label>
