@@ -38,15 +38,24 @@ export class InicioPage implements OnInit {
       this.fetchLastAttendance(this.user.uid,this.user.email); // Asegúrate de pasar el UID correcto
     } 
 
-    // Através de firestore, obtiene las secciones en las que está el usuario
-    this.firestore.collection('sections', ref => ref.where('userId', '==', this.user.id))
-    .snapshotChanges().subscribe((sections) => { //Utiliza snapshotChanges() para obtener los cambios en tiempo real
+    this.firestore.collection('sections').snapshotChanges().subscribe((sections) => {
       this.sections = sections.map((section: any) => {
         const data = section.payload.doc.data();
         return { id: section.payload.doc.id, name: data.name };
       });
       console.log('Secciones cargadas:', this.sections);
     });
+
+    // Através de firestore, obtiene las secciones en las que está el usuario
+/*     this.firestore.collection('sections', ref => ref.where('userId', '==', this.user.id))
+    .snapshotChanges().subscribe((sections) => { //Utiliza snapshotChanges() para obtener los cambios en tiempo real
+      this.sections = sections.map((section: any) => {
+        const data = section.payload.doc.data();
+        return { id: section.payload.doc.id, name: data.name };
+      });
+      console.log('Secciones cargadas:', this.sections); 
+    });*/
+
   }
 
   cargarUsuario() {
@@ -123,6 +132,7 @@ export class InicioPage implements OnInit {
     snapshot.forEach((doc) => {
       sections.push({ id: doc.id });
     });
+    console.log('Secciones encontradas:', sections);
     return sections;
   }
 
