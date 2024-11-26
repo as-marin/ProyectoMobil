@@ -63,13 +63,15 @@
    <!-- Utilización de sections, una lista armada a través de ts -->
    <!-- Organización de las secciones en el párrafo a través del ngFor 
     Ni siquiera está argando este div-->
-  <div class="container" *ngFor="let section of sections">
+  <div class="container">
     <ion-card>
       <ion-card-header>
         <ion-card-title>Asistencia por ramo</ion-card-title>
       </ion-card-header>
-      <ion-card-content>
-        <p class="section">***Todos los ramos inscritos***</p>
+      <ion-card-content *ngFor="let section of sections">
+        <p class="section">
+          {{ section.name }}
+        </p>
       </ion-card-content>
     </ion-card>
   </div>
