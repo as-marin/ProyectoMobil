@@ -5,6 +5,7 @@ import { UtilsService } from 'src/app/services/utils.service';
 import { MenuController } from '@ionic/angular';
 import { SectionsService } from 'src/app/services/sections.service';
 import { Subscription } from "rxjs";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-inicio',
@@ -22,14 +23,14 @@ export class InicioPage implements OnInit, OnDestroy {
     private firestore: AngularFirestore,
     private utilservice: UtilsService,
     private menuCtrl: MenuController,
-    private sectionsService: SectionsService
+    private sectionsService: SectionsService,
+    private router: Router
   ) {}
 
   ionViewWillEnter() {
     // Desactiva la barra lateral
     this.menuCtrl.enable(false);
   }
-
   async ngOnInit() {
     this.user = this.utilservice.getFromLocalStorage('user');
     await this.fireService.setPersistence(); // Configura la persistencia de sesión.
@@ -52,6 +53,11 @@ export class InicioPage implements OnInit, OnDestroy {
       if(this.sectionSubscription){
         this.sectionSubscription.unsubscribe();
       }
+  }
+
+  navigateToInscripcion(userId: string) {
+    console.log('Redirigiendo a inscripción con ID:', userId);
+    this.router.navigate(['/inscripcion', userId]);
   }
 
   cargarUsuario() {
@@ -98,7 +104,7 @@ export class InicioPage implements OnInit, OnDestroy {
   
                     if (!lastRecord || (lastRecord.timestamp < timestamp)) {
                       lastRecord = {
-                        sectionName: sectionData['name'],
+                        sectionName: sectionData ? sectionData['name'] || 'Unknown Section' : 'Unknown Section',
                         date: studentData['date'],
                         timestamp: timestamp, // Asegúrate de almacenar un objeto Date
                       };
@@ -118,7 +124,7 @@ export class InicioPage implements OnInit, OnDestroy {
       this.lastAttendance = lastRecord || null;
       console.log('Última asistencia encontrada:', this.lastAttendance);
     });
-  }
+}
   
 
   async syncOfflineData() {
