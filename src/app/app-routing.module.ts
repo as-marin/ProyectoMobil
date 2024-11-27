@@ -66,8 +66,18 @@ const routes: Routes = [
     path: 'horario',
     loadChildren: () => import('./pages/menus/horario/horario.module').then( m => m.HorarioPageModule)
   },
-
-  
+  {
+    path: 'scan',
+    loadChildren: () => import('./pages/menus/scan/scan.module').then( m => m.ScanPageModule)
+  },
+  {
+    path: 'user',
+    loadChildren: () => import('./pages/perfiles/user/user.module').then( m => m.UserPageModule)
+  },
+  {
+    path: 'inscripcion',
+    loadChildren: () => import('./pages/menus/inscripcion/inscripcion.module').then( m => m.InscripcionPageModule)
+  }
 
 
 
