@@ -7,7 +7,7 @@
   </ion-card>
 
   <!-- Inscription Section -->
-  <div class="container" *ngIf="!lastAttendance.sectionName">
+  <div class="container" > <!--*ngIf="!lastAttendance.sectionName"-->
     <ion-card>
       <ion-card-header>
         <ion-card-title>
@@ -16,7 +16,10 @@
       </ion-card-header>
       <ion-card-content>
         <!-- Add inscription form here -->
-        <ion-button expand="block">
+        <ion-button (click)="navigateToInscripcion('')" expand="block" fill="clear" shape="round">
+          Click me
+        </ion-button>
+        <ion-button (click)="navigateToInscripcion(user.uid)">
           Aqui
         </ion-button>
       </ion-card-content>
@@ -64,14 +67,18 @@
    <!-- Organización de las secciones en el párrafo a través del ngFor 
     Ni siquiera está argando este div-->
   <div class="container">
-    <ion-card>
+    <ion-card *ngFor="let section of sections">
       <ion-card-header>
-        <ion-card-title>Asistencia por ramo</ion-card-title>
+        <ion-card-subtitle></ion-card-subtitle>
+        <ion-card-title>Asistencia Carrera: {{ section.carrera }}</ion-card-title>
       </ion-card-header>
-      <ion-card-content *ngFor="let section of sections">
-        <p class="section">
-          {{ section.name }}
-        </p>
+      <ion-card-content >
+        <ion-list>
+          <ion-item class="section">
+            <ion-label>{{ section.nombre }}</ion-label>
+          </ion-item>
+        </ion-list>
+        
       </ion-card-content>
     </ion-card>
   </div>
