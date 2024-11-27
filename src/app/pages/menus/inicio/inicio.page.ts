@@ -1,26 +1,28 @@
-import { where } from 'firebase/firestore';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FireService } from '../../../services/fire.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { UtilsService } from 'src/app/services/utils.service';
 import { MenuController } from '@ionic/angular';
-import { firstValueFrom } from "rxjs";
+import { SectionsService } from 'src/app/services/sections.service';
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.page.html',
   styleUrls: ['./inicio.page.scss'],
 })
-export class InicioPage implements OnInit {
+export class InicioPage implements OnInit, OnDestroy {
   user: any;
   lastAttendance: any;
   sections: any[] = [];
+  private sectionSubscription: Subscription;
 
   constructor(
     private fireService: FireService, 
     private firestore: AngularFirestore,
     private utilservice: UtilsService,
-    private menuCtrl: MenuController
+    private menuCtrl: MenuController,
+    private sectionsService: SectionsService
   ) {}
 
   ionViewWillEnter() {
@@ -36,26 +38,20 @@ export class InicioPage implements OnInit {
     
     if (this.user?.uid) {
       this.fetchLastAttendance(this.user.uid,this.user.email); // Asegúrate de pasar el UID correcto
-    } 
 
-    this.firestore.collection('sections').snapshotChanges().subscribe((sections) => {
-      this.sections = sections.map((section: any) => {
-        const data = section.payload.doc.data();
-        return { id: section.payload.doc.id, name: data.name };
+
+      this.sectionSubscription = 
+      this.sectionsService.getSections(this.user.uid).subscribe(sections => {
+        this.sections = sections;
+        console.log('Secciones cargadas:', this.sections);
       });
-      console.log('Secciones cargadas:', this.sections);
-    });
-
-    // Através de firestore, obtiene las secciones en las que está el usuario
-/*     this.firestore.collection('sections', ref => ref.where('userId', '==', this.user.id))
-    .snapshotChanges().subscribe((sections) => { //Utiliza snapshotChanges() para obtener los cambios en tiempo real
-      this.sections = sections.map((section: any) => {
-        const data = section.payload.doc.data();
-        return { id: section.payload.doc.id, name: data.name };
-      });
-      console.log('Secciones cargadas:', this.sections); 
-    });*/
-
+    }
+  }
+  
+  ngOnDestroy() {
+      if(this.sectionSubscription){
+        this.sectionSubscription.unsubscribe();
+      }
   }
 
   cargarUsuario() {
@@ -124,17 +120,6 @@ export class InicioPage implements OnInit {
     });
   }
   
-  // Función async para obtener desde la colección 'sections' todas las secciones del usuario en específico
-  async getAllSections(uid: string){
-    let sections = [];
-    const sectionsRef = this.firestore.collection('sections');
-    const snapshot = await sectionsRef.ref.where('userId', '==', uid).get();
-    snapshot.forEach((doc) => {
-      sections.push({ id: doc.id });
-    });
-    console.log('Secciones encontradas:', sections);
-    return sections;
-  }
 
   async syncOfflineData() {
     const offlineData = JSON.parse(localStorage.getItem('offlineAttendance') || '[]');
