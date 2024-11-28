@@ -21,4 +21,20 @@ export class SectionsService {
         );
     }
 
+    getAllSections(): Observable<any[]> {
+        return this.firestore.collection('sections').snapshotChanges().pipe(
+            map(sections => sections.map(section => {
+                const data = section.payload.doc.data() as { nombre?: string };
+                //console.log('Datos de la sección:', data); // Depuración
+                return { ...data };
+            }))
+        );
+    }
+
+    // Inscribir a un usuario en una sección
+    async enrollInSection(uid: string, sectionId: string): Promise<void> {
+        const userRef = this.firestore.collection(`users/${uid}/sections`);
+        await userRef.doc(sectionId).set({ enrolled: true });
+    }
+
 }
