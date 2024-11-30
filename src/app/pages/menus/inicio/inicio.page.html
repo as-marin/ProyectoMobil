@@ -6,19 +6,36 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- Menu -->
-  <div class="container">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title> Menu </ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-button expand="block" shape="round" routerLink="user">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6">
+        <ion-button expand="block"  routerLink="/inscripcion">
+          <ion-icon slot="start" name="newspaper-outline"></ion-icon>
+          Ramos
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button expand="block" routerLink="/scan">
+          <ion-icon slot="start" name="qr-code-outline"></ion-icon>
+          Escanear QR
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6">
+        <ion-button expand="block" routerLink="/user">
+          <ion-icon slot="start" name="person-outline"></ion-icon>
           Perfil
         </ion-button>
-      </ion-card-content>
-    </ion-card>
-  </div>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button expand="block" routerLink="/config">
+          <ion-icon slot="start" name="settings-outline"></ion-icon>
+          Configuración
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
   <!-- Last Attended Class -->
   <div class="container">
@@ -73,35 +90,4 @@
       </ion-card-content>
     </ion-card>
   </div>
-
-  <!-- Attendance by Subject -->
-  <!-- Utilización de sections, una lista armada a través de ts -->
-  <!-- Organización de las secciones en el párrafo a través del ngFor 
-    Ni siquiera está argando este div-->
-  <div class="container">
-    <ion-card *ngFor="let section of sections">
-      <ion-card-header>
-        <ion-card-subtitle></ion-card-subtitle>
-        <ion-card-title
-          >Asistencia Carrera: {{ section.carrera }}</ion-card-title
-        >
-      </ion-card-header>
-      <ion-card-content>
-        <ion-list>
-          <ion-item class="section">
-            <ion-label>{{ section.nombre }}</ion-label>
-          </ion-item>
-        </ion-list>
-      </ion-card-content>
-    </ion-card>
-  </div>
-
-  <!-- <ion-tabs>
-  <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="scan" routerLink="scan">
-      <ion-icon name="camera"></ion-icon>
-      <ion-label>Escanear QR</ion-label>
-    </ion-tab-button>
-  </ion-tab-bar>
-</ion-tabs> -->
 </ion-content>
