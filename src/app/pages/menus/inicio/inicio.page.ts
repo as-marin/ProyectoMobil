@@ -2,10 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FireService } from '../../../services/fire.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { UtilsService } from 'src/app/services/utils.service';
-import { MenuController } from '@ionic/angular';
 import { SectionsService } from 'src/app/services/sections.service';
 import { Subscription } from "rxjs";
-import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-inicio',
@@ -22,19 +21,13 @@ export class InicioPage implements OnInit, OnDestroy {
     private fireService: FireService, 
     private firestore: AngularFirestore,
     private utilservice: UtilsService,
-    private menuCtrl: MenuController,
-    private sectionsService: SectionsService,
-    private router: Router
+    private sectionsService: SectionsService
   ) {}
 
-  ionViewWillEnter() {
-    // Desactiva la barra lateral
-    this.menuCtrl.enable(false);
-  }
   async ngOnInit() {
-    this.user = this.utilservice.getFromLocalStorage('user');
+  this.user = this.utilservice.getFromLocalStorage('user');
     await this.fireService.setPersistence(); // Configura la persistencia de sesión.
-    this.cargarUsuario(); // Carga los datos del usuario autenticado.
+    this.cargarUsuario(); // Carga los datos del usuario autenticado. */
 
     
     if (this.user?.uid) {
@@ -49,16 +42,8 @@ export class InicioPage implements OnInit, OnDestroy {
     }
   }
   
-  ngOnDestroy() {
-      if(this.sectionSubscription){
-        this.sectionSubscription.unsubscribe();
-      }
-  }
 
-  navigateToInscripcion(userId: string) {
-    console.log('Redirigiendo a inscripción con ID:', userId);
-    this.router.navigate(['/inscripcion', userId]);
-  }
+
 
   cargarUsuario() {
     this.fireService.getUserData().subscribe(user => {
@@ -149,6 +134,9 @@ export class InicioPage implements OnInit, OnDestroy {
     localStorage.removeItem('offlineAttendance');
   }
   
-
-  
+  ngOnDestroy() {
+    if(this.sectionSubscription){
+      this.sectionSubscription.unsubscribe();
+    }
+}
 }
