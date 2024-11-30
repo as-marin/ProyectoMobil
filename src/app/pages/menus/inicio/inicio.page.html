@@ -6,21 +6,15 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- Inscription Section -->
-  <div class="container" > <!--*ngIf="!lastAttendance.sectionName"-->
+  <!-- Menu -->
+  <div class="container">
     <ion-card>
       <ion-card-header>
-        <ion-card-title>
-          Inscripción de ramos
-        </ion-card-title>
+        <ion-card-title> Menu </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <!-- Add inscription form here -->
-        <ion-button (click)="navigateToInscripcion('')" expand="block" fill="clear" shape="round">
-          Click me
-        </ion-button>
-        <ion-button (click)="navigateToInscripcion(user.uid)">
-          Aqui
+        <ion-button expand="block" shape="round" routerLink="user">
+          Perfil
         </ion-button>
       </ion-card-content>
     </ion-card>
@@ -35,26 +29,44 @@
       <ion-card-content>
         <ion-list lines="none">
           <ion-item>
-            <ion-icon name="book-outline" slot="start" color="warning"></ion-icon>
+            <ion-icon
+              name="book-outline"
+              slot="start"
+              color="warning"
+            ></ion-icon>
             <ion-label>
               <ion-text color="medium">Sección:</ion-text>
-              <ion-text class="ion-padding-start value-text">{{ lastAttendance.sectionName }}</ion-text>
+              <ion-text class="ion-padding-start value-text"
+                >{{ lastAttendance.sectionName }}</ion-text
+              >
             </ion-label>
           </ion-item>
 
           <ion-item>
-            <ion-icon name="calendar-outline" slot="start" color="warning"></ion-icon>
+            <ion-icon
+              name="calendar-outline"
+              slot="start"
+              color="warning"
+            ></ion-icon>
             <ion-label>
               <ion-text color="medium">Fecha:</ion-text>
-              <ion-text class="ion-padding-start value-text">{{ lastAttendance.timestamp | date: 'shortDate' }}</ion-text>
+              <ion-text class="ion-padding-start value-text"
+                >{{ lastAttendance.timestamp | date: 'shortDate' }}</ion-text
+              >
             </ion-label>
           </ion-item>
 
           <ion-item>
-            <ion-icon name="time-outline" slot="start" color="warning"></ion-icon>
+            <ion-icon
+              name="time-outline"
+              slot="start"
+              color="warning"
+            ></ion-icon>
             <ion-label>
               <ion-text color="medium">Hora:</ion-text>
-              <ion-text class="ion-padding-start value-text">{{ lastAttendance.timestamp | date: 'shortTime' }}</ion-text>
+              <ion-text class="ion-padding-start value-text"
+                >{{ lastAttendance.timestamp | date: 'shortTime' }}</ion-text
+              >
             </ion-label>
           </ion-item>
         </ion-list>
@@ -63,50 +75,28 @@
   </div>
 
   <!-- Attendance by Subject -->
-   <!-- Utilización de sections, una lista armada a través de ts -->
-   <!-- Organización de las secciones en el párrafo a través del ngFor 
+  <!-- Utilización de sections, una lista armada a través de ts -->
+  <!-- Organización de las secciones en el párrafo a través del ngFor 
     Ni siquiera está argando este div-->
   <div class="container">
     <ion-card *ngFor="let section of sections">
       <ion-card-header>
         <ion-card-subtitle></ion-card-subtitle>
-        <ion-card-title>Asistencia Carrera: {{ section.carrera }}</ion-card-title>
+        <ion-card-title
+          >Asistencia Carrera: {{ section.carrera }}</ion-card-title
+        >
       </ion-card-header>
-      <ion-card-content >
+      <ion-card-content>
         <ion-list>
           <ion-item class="section">
             <ion-label>{{ section.nombre }}</ion-label>
           </ion-item>
         </ion-list>
-        
       </ion-card-content>
     </ion-card>
   </div>
 
-  <!-- Bottom Navigation -->
-<ion-tabs>
-  <div slot="bottom">
-    <ion-tab-bar>
-      <ion-tab-button tab="scan" routerLink="scan">
-        <ion-icon name="qr-code-outline" ></ion-icon>
-        <ion-label>Escanner QR</ion-label>
-      </ion-tab-button>
-      
-      <ion-tab-button tab="inscripcion" routerLink="inscripcion">
-        <ion-icon name="newspaper-outline" ></ion-icon>
-        <ion-label>Inscripcion</ion-label>
-      </ion-tab-button>
-
-      <ion-tab-button tab="user" routerLink="user">
-        <ion-icon name="person-outline" ></ion-icon>
-        <ion-label>Perfil</ion-label>
-      </ion-tab-button>
-    </ion-tab-bar>
-
-  </div>
-</ion-tabs>
-
-<!-- <ion-tabs>
+  <!-- <ion-tabs>
   <ion-tab-bar slot="bottom">
     <ion-tab-button tab="scan" routerLink="scan">
       <ion-icon name="camera"></ion-icon>
@@ -115,5 +105,3 @@
   </ion-tab-bar>
 </ion-tabs> -->
 </ion-content>
-
-
