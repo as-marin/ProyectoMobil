@@ -32,16 +32,8 @@ export class InicioPage implements OnInit, OnDestroy {
     
     if (this.user?.uid) {
       this.fetchLastAttendance(this.user.uid,this.user.email); // Asegúrate de pasar el UID correcto
-
-
-      this.sectionSubscription = 
-      this.sectionsService.getSections(this.user.uid).subscribe(sections => {
-        this.sections = sections;
-        console.log('Secciones cargadas:', this.sections);
-      });
-    }
   }
-  
+}
 
 
 
@@ -135,8 +127,6 @@ export class InicioPage implements OnInit, OnDestroy {
   }
   
   ngOnDestroy() {
-    if(this.sectionSubscription){
-      this.sectionSubscription.unsubscribe();
-    }
+
 }
 }
