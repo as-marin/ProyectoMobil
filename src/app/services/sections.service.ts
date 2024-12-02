@@ -61,4 +61,29 @@ export class SectionsService {
         const userRef = this.firestore.collection(`users/${uid}/sections`);
         await userRef.doc(sectionId).set({ enrolled: true });
     }
+
+    /*
+    getAttendanceForDate(sectionID: string, dateString: string, email: string): Observable<any> {
+  return this.firestore
+    .collection('sections')
+    .doc(sectionID)
+    .collection('attendance')
+    .doc(dateString)
+    .valueChanges()
+    .pipe(
+      map(data => {
+        // Verifica si hay datos para el usuario en esa fecha
+        if (data && data[email]) {
+          return { date: dateString, attendance: data[email] };
+        } else {
+          return null;  // Si no hay datos, devuelve null
+        }
+      }),
+      catchError(error => {
+        console.error(`Error en la consulta de asistencia para ${dateString}:`, error);
+        throw new Error('Error al consultar la asistencia.');
+      })
+    );
+}
+    */
 }
