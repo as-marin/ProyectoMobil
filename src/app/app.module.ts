@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AngularFireModule } from "@angular/fire/compat";
 import { AngularFireAuthModule } from "@angular/fire/compat/auth";
 import { firebaseConfig } from 'src/environments/firebaseconfig';
+import { environment } from '.././environments/environment';
 import { AngularFirestoreModule } from "@angular/fire/compat/firestore";
 import { ReactiveFormsModule } from '@angular/forms';
 
