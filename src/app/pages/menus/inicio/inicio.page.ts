@@ -15,13 +15,11 @@ export class InicioPage implements OnInit, OnDestroy {
   user: any;
   lastAttendance: any;
   sections: any[] = [];
-  private sectionSubscription: Subscription;
 
   constructor(
     private fireService: FireService, 
     private firestore: AngularFirestore,
-    private utilservice: UtilsService,
-    private sectionsService: SectionsService
+    private utilservice: UtilsService
   ) {}
 
   async ngOnInit() {
@@ -30,9 +28,8 @@ export class InicioPage implements OnInit, OnDestroy {
     this.cargarUsuario(); // Carga los datos del usuario autenticado. */
 
     
-    if (this.user?.uid) {
+    
       this.fetchLastAttendance(this.user.uid,this.user.email); // Asegúrate de pasar el UID correcto
-  }
 }
 
 
@@ -54,54 +51,44 @@ export class InicioPage implements OnInit, OnDestroy {
     await this.syncOfflineData();
   
     // Obtiene todas las secciones
-    this.firestore.collection('sections').snapshotChanges().subscribe(async (sections) => {
-      const promises = [];
+    const sectionsSnapshot = await this.firestore.collection('sections').get().toPromise();
   
-      sections.forEach((section) => {
-        const sectionId = section.payload.doc.id;
-        const sectionData = section.payload.doc.data();
+    const promises = sectionsSnapshot.docs.map(async (section) => {
+      const sectionId = section.id;
+      const sectionData = section.data() as { name?: string };
   
-        // Agrega una promesa para procesar cada sección
-        promises.push(
-          new Promise<void>((resolve) => {
-            this.firestore
-              .collection(`sections/${sectionId}/attendance`)
-              .snapshotChanges()
-              .subscribe((attendanceRecords) => {
-                attendanceRecords.forEach((record) => {
-                  const recordData = record.payload.doc.data();
-                  if (recordData[email]) {
-                    const studentData = recordData[email];
+      // Obtiene registros de asistencia para cada sección
+      const attendanceSnapshot = await this.firestore.collection(`sections/${sectionId}/attendance`).get().toPromise();
   
-                    // Convierte el timestamp si es string
-                    const timestamp =
-                      typeof studentData.timestamp === 'string'
-                        ? new Date(studentData.timestamp)
-                        : studentData.timestamp.toDate();
+      attendanceSnapshot.docs.forEach((record) => {
+        const recordData = record.data();
+        if (recordData[email]) {
+          const studentData = recordData[email];
   
-                    if (!lastRecord || (lastRecord.timestamp < timestamp)) {
-                      lastRecord = {
-                        sectionName: sectionData ? sectionData['name'] || 'Unknown Section' : 'Unknown Section',
-                        date: studentData['date'],
-                        timestamp: timestamp, // Asegúrate de almacenar un objeto Date
-                      };
-                    }
-                  }
-                });
-                resolve(); // Marca la sección como procesada
-              });
-          })
-        );
+          const timestamp =
+            typeof studentData.timestamp === 'string'
+              ? new Date(studentData.timestamp)
+              : studentData.timestamp.toDate();
+  
+          if (!lastRecord || lastRecord.timestamp < timestamp) {
+            lastRecord = {
+              sectionName: sectionData.name || 'Unknown Section',
+              date: studentData.date,
+              timestamp: timestamp,
+            };
+          }
+        }
       });
-  
-      // Espera a que se procesen todas las secciones
-      await Promise.all(promises);
-  
-      // Una vez que todas las secciones han sido procesadas, actualiza `lastAttendance`
-      this.lastAttendance = lastRecord || null;
-      console.log('Última asistencia encontrada:', this.lastAttendance);
     });
-}
+  
+    // Espera a que todas las secciones sean procesadas
+    await Promise.all(promises);
+  
+    // Actualiza `lastAttendance` con la última asistencia encontrada
+    this.lastAttendance = lastRecord || null;
+    console.log('Última asistencia encontrada:', this.lastAttendance);
+  }
+  
   
 
   async syncOfflineData() {
