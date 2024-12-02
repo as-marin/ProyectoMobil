@@ -74,11 +74,6 @@ const routes: Routes = [
     path: 'user',
     loadChildren: () => import('./pages/perfiles/user/user.module').then( m => m.UserPageModule)
   },
-  {
-    path: 'inscripcion',
-    loadChildren: () => import('./pages/menus/inscripcion/inscripcion.module').then( m => m.InscripcionPageModule)
-  }
-
 
 
 ];
