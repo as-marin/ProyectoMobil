@@ -4,10 +4,6 @@ import { RoleGuard } from "../app/guards/role.guard";
 
 const routes: Routes = [
   {
-    path: 'home',
-    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
-  },
-  {
     path: '',
     redirectTo: 'bienvenida',
     pathMatch: 'full'
