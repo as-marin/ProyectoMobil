@@ -49,32 +49,33 @@ export class UserService {
     }
   
     // Método para obtener la última asistencia
+    // Método para obtener la última asistencia
     async fetchLastAttendance(uid: string, email: string): Promise<any> {
       let lastRecord = null;
-  
+    
       // Sincroniza datos locales con Firestore antes de buscar
       await this.syncOfflineData();
-  
+    
       // Obtiene todas las secciones
       const sectionsSnapshot = await this.firestore.collection('sections').get().toPromise();
-  
+    
       const promises = sectionsSnapshot.docs.map(async (section) => {
         const sectionId = section.id;
         const sectionData = section.data() as { name?: string };
-  
+    
         // Obtiene registros de asistencia para cada sección
         const attendanceSnapshot = await this.firestore.collection(`sections/${sectionId}/attendance`).get().toPromise();
-  
+    
         attendanceSnapshot.docs.forEach((record) => {
           const recordData = record.data();
-          if (recordData[email]) {
+          if (recordData[email] && recordData[email].uid === uid) {
             const studentData = recordData[email];
-  
+    
             const timestamp =
               typeof studentData.timestamp === 'string'
                 ? new Date(studentData.timestamp)
                 : studentData.timestamp.toDate();
-  
+    
             if (!lastRecord || lastRecord.timestamp < timestamp) {
               lastRecord = {
                 sectionName: sectionData.name || 'Unknown Section',
@@ -85,10 +86,10 @@ export class UserService {
           }
         });
       });
-  
+    
       // Espera a que todas las secciones sean procesadas
       await Promise.all(promises);
-  
+    
       return lastRecord || null;
     }
 }
