@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { UtilsService } from 'src/app/services/utils.service';
-import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-asistencia',
@@ -46,16 +45,19 @@ export class AsistenciaPage implements OnInit {
             .get()
             .toPromise();
 
+          // Excluir el documento `init` al calcular clases totales y asistidas
+          const validRecords = attendanceSnapshot.docs.filter((record) => record.id !== 'init');
+
           // Verifica si el usuario está presente en alguna clase
-          const userInSection = attendanceSnapshot.docs.some((record) =>
+          const userInSection = validRecords.some((record) =>
             record.data()[userEmail]
           );
 
           if (userInSection) {
-            const clasesTotales = attendanceSnapshot.size;
+            const clasesTotales = validRecords.length;
 
             // Filtra las clases donde el correo del usuario está presente
-            const clasesAsistidas = attendanceSnapshot.docs.filter((record) =>
+            const clasesAsistidas = validRecords.filter((record) =>
               record.data()[userEmail]
             ).length;
 
