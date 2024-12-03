@@ -10,7 +10,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class ConfigPage implements OnInit {
   user: any;
-  newEmail: string = '';
+  newName: string = '';
   currentPassword: string = '';
   errorMessage: string = '';
   successMessage: string = '';
@@ -29,13 +29,13 @@ export class ConfigPage implements OnInit {
     this.errorMessage = '';
     this.successMessage = '';
 
-    if (!this.newEmail || !this.currentPassword) {
+    if (!this.newName || !this.currentPassword) {
       this.errorMessage = 'Por favor completa todos los campos.';
       return;
     }
 
     try {
-      await this.userService.modifyUserEmail(this.newEmail, this.currentPassword);
+      await this.userService.modifyUserName(this.newName, this.currentPassword);
       this.successMessage = 'Correo electrónico actualizado con éxito.';
       // Opcional: Actualizar localStorage o recargar el usuario
     } catch (error) {

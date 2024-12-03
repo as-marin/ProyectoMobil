@@ -12,15 +12,15 @@ export class UserService {
 
   constructor(private angularFirestore: AngularFirestore) { }
 
-  async modifyUserEmail(newEmail: string, userId: string): Promise<void> {
+  async modifyUserName(newName: string, userId: string): Promise<void> {
     try {
-      // Actualiza el correo en la base de datos de Firestore
+      // Actualiza el nombre en la base de datos de Firestore
       const userRef = this.firestore.collection('users').doc(userId);
-      await userRef.update({ email: newEmail });
+      await userRef.update({ name: newName });
       
-      console.log('Correo actualizado correctamente');
+      console.log('Nombre actualizado correctamente');
     } catch (error) {
-      console.error('Error al modificar el correo:', error);
+      console.error('Error al modificar el nombre:', error);
       throw error;
     }
   }
