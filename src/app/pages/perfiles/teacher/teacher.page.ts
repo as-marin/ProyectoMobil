@@ -128,7 +128,6 @@ export class TeacherPage implements OnInit {
   
       // Crear la subcolección `attendance` vacía dentro de la sección
       const attendancePath = `${sectionPath}/attendance`;
-      await this.firestore.doc(`${attendancePath}/init`).set({}); // Crear un documento vacío para inicializar la colección
   
       console.log(`Sección '${sectionName}' creada con éxito.`);
       this.newSectionName = ''; // Limpiar el campo después de crear la sección

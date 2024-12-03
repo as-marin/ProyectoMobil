@@ -5,9 +5,25 @@
 </ion-header>
 
 <ion-content>
-  <ion-header>
-    <ion-toolbar>
-      <ion-title size="large">asistencia</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <!-- Lista de secciones -->
+  <ion-list>
+    <ion-button
+      *ngFor="let seccion of seccionesAsistencia"
+      (click)="onSectionSelect(seccion.id)"
+    >
+      {{ seccion.nombre }}
+    </ion-button>
+  </ion-list>
+
+  <!-- Detalles de la sección seleccionada -->
+  <ion-card *ngIf="selectedSection">
+    <ion-card-header>
+      <ion-card-title>Sección: {{ selectedSection.nombre }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Clases Totales:</strong> {{ selectedSection.clasesTotales }}</p>
+      <p><strong>Clases Asistidas:</strong> {{ selectedSection.clasesAsistidas }}</p>
+      <p><strong>Porcentaje de Asistencia:</strong> {{ selectedSection.porcentajeAsistencia.toFixed(2) }}%</p>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
