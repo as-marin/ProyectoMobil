@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FireService } from '../../../services/fire.service';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { UtilsService } from 'src/app/services/utils.service';
 import { UserService } from '../../../services/user.service';
 
@@ -17,7 +16,6 @@ export class InicioPage implements OnInit, OnDestroy {
 
   constructor(
     private fireService: FireService,
-    private firestore: AngularFirestore,
     private utilservice: UtilsService,
     private userService: UserService
   ) { }
