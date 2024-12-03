@@ -1,36 +1,94 @@
 import { Injectable } from '@angular/core';
 import { getAuth, updateEmail, reauthenticateWithCredential, EmailAuthProvider, User, sendEmailVerification } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+  private firestore = this.angularFirestore;
+  private auth = getAuth();
 
-  constructor() { }
+  constructor(private angularFirestore: AngularFirestore) { }
 
-  async modifyUserEmail(newEmail: string, currentPassword: string): Promise<void> {
-    const auth = getAuth();
-    const user = auth.currentUser;
-
-    if (user) {
-      try {
-        // Reautenticar al usuario
-        const credential = EmailAuthProvider.credential(user.email!, currentPassword);
-        await reauthenticateWithCredential(user, credential);
-
-        // Actualizar el correo electrónico
-        await updateEmail(user, newEmail);
-
-        // Enviar correo de verificación al nuevo email
-        await sendEmailVerification(user);
-        
-        console.log('Correo de verificación enviado al nuevo email.');
-      } catch (error) {
-        console.error('Error al actualizar el correo:', error);
-        throw error;
-      }
-    } else {
-      throw new Error('No hay un usuario autenticado');
+  async modifyUserEmail(newEmail: string, userId: string): Promise<void> {
+    try {
+      // Actualiza el correo en la base de datos de Firestore
+      const userRef = this.firestore.collection('users').doc(userId);
+      await userRef.update({ email: newEmail });
+      
+      console.log('Correo actualizado correctamente');
+    } catch (error) {
+      console.error('Error al modificar el correo:', error);
+      throw error;
     }
   }
+
+    // Método para sincronizar datos offline con Firestore
+    async syncOfflineData(): Promise<void> {
+      const offlineData = JSON.parse(localStorage.getItem('offlineAttendance') || '[]');
+      if (offlineData.length === 0) {
+        console.log('No hay datos para sincronizar.');
+        return;
+      }
+  
+      for (const record of offlineData) {
+        try {
+          const { sectionId, classDate, attendanceData } = record;
+          const attendancePath = `sections/${sectionId}/attendance`;
+  
+          await this.firestore.collection(attendancePath).doc(classDate).set(attendanceData, { merge: true });
+          console.log(`Datos sincronizados para la sección ${sectionId}, fecha ${classDate}`);
+        } catch (error) {
+          console.error('Error al sincronizar datos:', error);
+        }
+      }
+  
+      localStorage.removeItem('offlineAttendance');
+    }
+  
+    // Método para obtener la última asistencia
+    async fetchLastAttendance(uid: string, email: string): Promise<any> {
+      let lastRecord = null;
+  
+      // Sincroniza datos locales con Firestore antes de buscar
+      await this.syncOfflineData();
+  
+      // Obtiene todas las secciones
+      const sectionsSnapshot = await this.firestore.collection('sections').get().toPromise();
+  
+      const promises = sectionsSnapshot.docs.map(async (section) => {
+        const sectionId = section.id;
+        const sectionData = section.data() as { name?: string };
+  
+        // Obtiene registros de asistencia para cada sección
+        const attendanceSnapshot = await this.firestore.collection(`sections/${sectionId}/attendance`).get().toPromise();
+  
+        attendanceSnapshot.docs.forEach((record) => {
+          const recordData = record.data();
+          if (recordData[email]) {
+            const studentData = recordData[email];
+  
+            const timestamp =
+              typeof studentData.timestamp === 'string'
+                ? new Date(studentData.timestamp)
+                : studentData.timestamp.toDate();
+  
+            if (!lastRecord || lastRecord.timestamp < timestamp) {
+              lastRecord = {
+                sectionName: sectionData.name || 'Unknown Section',
+                date: studentData.date,
+                timestamp: timestamp,
+              };
+            }
+          }
+        });
+      });
+  
+      // Espera a que todas las secciones sean procesadas
+      await Promise.all(promises);
+  
+      return lastRecord || null;
+    }
 }
