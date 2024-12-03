@@ -15,7 +15,6 @@ export class AsistenciaPage implements OnInit {
   constructor(
     private firestore: AngularFirestore,
     private utilsService: UtilsService,
-    private navCtrl: NavController
   ) {}
 
   async ngOnInit() {
@@ -26,9 +25,7 @@ export class AsistenciaPage implements OnInit {
       console.error('Usuario no encontrado en localStorage');
     }
   }
-  goBack() {
-    this.navCtrl.back();
-  }
+  
 
   async calcularAsistencias() {
     try {
