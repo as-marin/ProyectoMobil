@@ -1,15 +1,9 @@
-import { Injectable } from '@angular/core';
-import { getAuth, updateEmail, reauthenticateWithCredential, EmailAuthProvider, User, sendEmailVerification } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFirestore } from "@angular/fire/compat/firestore";
+import { getAuth } from "firebase/auth";
 
-@Injectable({
-  providedIn: 'root'
-})
 export class UserService {
   private firestore = this.angularFirestore;
   private auth = getAuth();
-  lastAttendance: any;
 
   constructor(private angularFirestore: AngularFirestore) { }
 
@@ -51,45 +45,46 @@ export class UserService {
   
     // Método para obtener la última asistencia
     // Método para obtener la última asistencia
-    fetchLastAttendance(uid: string, email: string): void {
-      this.syncOfflineData();
-  
-      this.firestore.collection('sections').snapshotChanges().subscribe(sectionsSnapshot => {
-        let lastRecord = null;
-  
-        const promises = sectionsSnapshot.map(async (sectionDoc: any) => {
-          const sectionId = sectionDoc.payload.doc.id;
-          const sectionData = sectionDoc.payload.doc.data() as { name?: string };
-  
-          this.firestore.collection(`sections/${sectionId}/attendance`).snapshotChanges().subscribe(attendanceSnapshot => {
-            attendanceSnapshot.forEach((recordDoc: any) => {
-              const recordData = recordDoc.payload.doc.data();
-              if (recordData[email] && recordData[email].uid === uid) {
-                const studentData = recordData[email];
-  
-                const timestamp =
-                  typeof studentData.timestamp === 'string'
-                    ? new Date(studentData.timestamp)
-                    : studentData.timestamp.toDate();
-  
-                if (!lastRecord || lastRecord.timestamp < timestamp) {
-                  lastRecord = {
-                    sectionName: sectionData.name || 'Unknown Section',
-                    date: studentData.date,
-                    timestamp: timestamp,
-                  };
-                }
-              }
-            });
-  
-            this.lastAttendance = lastRecord;
-          });
-        });
-  
-        Promise.all(promises).then(() => {
-          // Aquí puedes realizar cualquier acción adicional con lastAttendance
-          console.log('Última asistencia actualizada:', this.lastAttendance);
+    async fetchLastAttendance(uid: string, email: string): Promise<any> {
+      let lastRecord = null;
+    
+      // Sincroniza datos locales con Firestore antes de buscar
+      await this.syncOfflineData();
+    
+      // Obtiene todas las secciones
+      const sectionsSnapshot = await this.firestore.collection('sections').get().toPromise();
+    
+      const promises = sectionsSnapshot.docs.map(async (section) => {
+        const sectionId = section.id;
+        const sectionData = section.data() as { name?: string };
+    
+        // Obtiene registros de asistencia para cada sección
+        const attendanceSnapshot = await this.firestore.collection(`sections/${sectionId}/attendance`).get().toPromise();
+    
+        attendanceSnapshot.docs.forEach((record) => {
+          const recordData = record.data();
+          if (recordData[email] && recordData[email].uid === uid) {
+            const studentData = recordData[email];
+    
+            const timestamp =
+              typeof studentData.timestamp === 'string'
+                ? new Date(studentData.timestamp)
+                : studentData.timestamp.toDate();
+    
+            if (!lastRecord || lastRecord.timestamp < timestamp) {
+              lastRecord = {
+                sectionName: sectionData.name || 'Unknown Section',
+                date: studentData.date,
+                timestamp: timestamp,
+              };
+            }
+          }
         });
       });
+    
+      // Espera a que todas las secciones sean procesadas
+      await Promise.all(promises);
+    
+      return lastRecord || null;
     }
 }
