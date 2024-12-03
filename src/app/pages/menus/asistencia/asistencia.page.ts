@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { UtilsService } from 'src/app/services/utils.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-asistencia',
@@ -15,6 +16,7 @@ export class AsistenciaPage implements OnInit {
   constructor(
     private firestore: AngularFirestore,
     private utilsService: UtilsService,
+    private navCtrl: NavController
   ) {}
 
   async ngOnInit() {
@@ -27,6 +29,9 @@ export class AsistenciaPage implements OnInit {
   }
   
 
+  goBack() {
+    this.navCtrl.back();
+  }
   async calcularAsistencias() {
     try {
       const userEmail = this.user.email; // Correo del usuario actual
