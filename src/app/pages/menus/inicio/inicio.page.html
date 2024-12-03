@@ -2,14 +2,14 @@
   <!-- Welcome Section -->
   <ion-card class="welcome-card">
     <ion-card-content>
-      <h2>Bienvenido {{ user.nombre }}</h2>
+      <h2>Bienvenido {{ user?.nombre || 'Usuario' }}</h2>
     </ion-card-content>
   </ion-card>
 
   <ion-grid>
     <ion-row>
       <ion-col size="6">
-        <ion-button expand="block"  routerLink="/asistencia">
+        <ion-button expand="block" routerLink="/asistencia">
           <ion-icon slot="start" name="newspaper-outline"></ion-icon>
           Asistencia
         </ion-button>
@@ -37,8 +37,11 @@
     </ion-row>
   </ion-grid>
 
+  <!-- Spinner de carga -->
+  <ion-spinner *ngIf="loading" name="crescent" color="primary"></ion-spinner>
+
   <!-- Last Attended Class -->
-  <div class="container">
+  <div class="container" *ngIf="!loading && lastAttendance">
     <ion-card>
       <ion-card-header>
         <ion-card-title>Última clase atendida</ion-card-title>
@@ -54,7 +57,7 @@
             <ion-label>
               <ion-text color="medium">Sección:</ion-text>
               <ion-text class="ion-padding-start value-text"
-                >{{ lastAttendance.sectionName }}</ion-text
+                >{{ lastAttendance?.sectionName || 'No disponible' }}</ion-text
               >
             </ion-label>
           </ion-item>
@@ -68,7 +71,7 @@
             <ion-label>
               <ion-text color="medium">Fecha:</ion-text>
               <ion-text class="ion-padding-start value-text"
-                >{{ lastAttendance.timestamp | date: 'shortDate' }}</ion-text
+                >{{ lastAttendance?.timestamp | date: 'shortDate' || 'No disponible' }}</ion-text
               >
             </ion-label>
           </ion-item>
@@ -82,7 +85,7 @@
             <ion-label>
               <ion-text color="medium">Hora:</ion-text>
               <ion-text class="ion-padding-start value-text"
-                >{{ lastAttendance.timestamp | date: 'shortTime' }}</ion-text
+                >{{ lastAttendance?.timestamp | date: 'shortTime' || 'No disponible' }}</ion-text
               >
             </ion-label>
           </ion-item>
