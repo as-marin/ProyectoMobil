@@ -1,6 +1,11 @@
-import { AngularFirestore } from "@angular/fire/compat/firestore";
-import { getAuth } from "firebase/auth";
+import { Injectable } from '@angular/core';
+import { getAuth, updateEmail, reauthenticateWithCredential, EmailAuthProvider, User, sendEmailVerification } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
+@Injectable({
+  providedIn: 'root'
+})
 export class UserService {
   private firestore = this.angularFirestore;
   private auth = getAuth();
