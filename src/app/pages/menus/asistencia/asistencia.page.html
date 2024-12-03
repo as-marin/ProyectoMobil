@@ -1,23 +1,15 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <ion-title>Asistencia</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <!-- Lista de secciones -->
-  <ion-list>
-    <ion-button
-      *ngFor="let seccion of seccionesAsistencia"
-      (click)="onSectionSelect(seccion.id)"
-    >
-      {{ seccion.nombre }}
-    </ion-button>
-  </ion-list>
-
-  <!-- Detalles de la sección seleccionada -->
   <ion-card *ngIf="selectedSection">
     <ion-card-header>
       <ion-card-title>Sección: {{ selectedSection.nombre }}</ion-card-title>
@@ -28,4 +20,25 @@
       <p><strong>Porcentaje de Asistencia:</strong> {{ selectedSection.porcentajeAsistencia.toFixed(2) }}%</p>
     </ion-card-content>
   </ion-card>
+  <!-- Lista de secciones -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Consulta tu asistencia a los Ramos</ion-card-subtitle>
+      <ion-card-title>Porcentaje de Asistencia</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list *ngFor="let seccion of seccionesAsistencia"
+      (click)="onSectionSelect(seccion.id)">
+        
+        <ion-item lines="full" button>
+          <ion-icon slot="start" name="library-outline"></ion-icon>
+          <ion-label  class="seccion">{{ seccion.nombre }}</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+
+  <!-- Detalles de la sección seleccionada -->
+
 </ion-content>
