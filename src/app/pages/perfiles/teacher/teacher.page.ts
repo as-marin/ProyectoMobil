@@ -33,15 +33,50 @@ export class TeacherPage implements OnInit {
 
   async ngOnInit() {
     await this.fireService.setPersistence();
+  
+    // Intenta obtener el usuario desde localStorage
     this.user = this.utilservice.getFromLocalStorage('user');
-    this.firestore.collection('sections').snapshotChanges().subscribe((sections) => {
-      this.sections = sections.map((section: any) => {
-        const data = section.payload.doc.data();
-        return { id: section.payload.doc.id, name: data.name };
-      });
-      console.log('Secciones cargadas:', this.sections);
-    });
+  
+    // Si el usuario no está en localStorage, intenta cargarlo desde Firebase
+    if (!this.user) {
+      try {
+        this.user = await this.getUserFromFirestore();
+        if (!this.user) {
+          throw new Error('No se pudo cargar el usuario.');
+        }
+  
+        // Guarda el usuario en localStorage
+        this.utilservice.saveInLocalStorage('user', this.user);
+      } catch (error) {
+        console.error('Error al cargar el usuario:', error);
+      }
+    }
+  
+    // Si el usuario sigue siendo nulo, muestra un error
+    if (!this.user) {
+      console.error('El usuario no está definido. No se puede continuar.');
+      return;
+    }
+  
+    // Cargar secciones creadas por el profesor actual desde Firebase
+    this.firestore
+      .collection('sections', (ref) => ref.where('professor', '==', this.user.nombre))
+      .snapshotChanges()
+      .subscribe(
+        (sections) => {
+          this.sections = sections.map((section: any) => {
+            const data = section.payload.doc.data();
+            return { id: section.payload.doc.id, name: data.name };
+          });
+          console.log('Secciones del profesor actual cargadas:', this.sections);
+        },
+        (error) => {
+          console.error('Error al cargar las secciones:', error);
+        }
+      );
   }
+  
+  
 
   loadAttendanceDates(sectionId: string) {
     this.firestore.collection(`sections/${sectionId}/attendance`).snapshotChanges().subscribe((attendanceDates) => {
@@ -183,4 +218,16 @@ export class TeacherPage implements OnInit {
   viewUserDetails(user: any) {
     console.log('User details:', user);
   }
+
+  async getUserFromFirestore(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.fireService.getUserData().subscribe(
+        (userData) => resolve(userData),
+        (error) => reject(error)
+      );
+    });
+  }
+  
+
 }
+
