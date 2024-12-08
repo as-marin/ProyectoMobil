@@ -19,7 +19,11 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra similar al QR */
 }
 
-
+.lista-secciones {
+  display: block;
+  max-height: 50%;
+  overflow: auto;
+}
 
 
 

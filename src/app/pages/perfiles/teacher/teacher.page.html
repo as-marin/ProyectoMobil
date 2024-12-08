@@ -13,7 +13,7 @@
     <ion-list>
       <ion-item>
         <ion-avatar slot="start">
-          <img src="https://www.gravatar.com/avatar?d=identicon">
+          <img src="https://www.gravatar.com/avatar?d=identicon" />
         </ion-avatar>
         <ion-label>
           <h1 *ngIf="user">{{user.nombre}} {{user.apellido}}</h1>
@@ -40,25 +40,34 @@
     </ion-item>
   </div>
 
-  <!-- Sección de clases -->
-  <ion-list class="section-container">
-    <button
-      *ngFor="let section of sections"
-      (click)="onSectionSelect(section.id)"
-      class="section-button">
-      {{ section.name }}
-    </button>
-  </ion-list>
-  
+  <!-- Lista de secciones -->
+  <ion-card class="lista-secciones">
+    <ion-card-header>
+      <ion-card-subtitle
+        >Consulta la asistencia a tus secciones</ion-card-subtitle
+      >
+      <ion-card-title>Cantidad de Asistencias</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <!-- Sección de clases -->
+      <ion-list *ngFor="let section of sections" 
+      (click)="onSectionSelect(section.id)">
+        <ion-item lines="full" button >
+          <ion-label>{{ section.name }}</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 
-  <!-- Fechas de asistencia -->
   <ion-list *ngIf="selectedSection">
-    <ion-item *ngFor="let date of attendanceDates" (click)="onDateSelect(date.date)">
+    <ion-title>{{ selectedSection.name }}</ion-title>
+    <ion-item
+      *ngFor="let date of attendanceDates"
+      (click)="onDateSelect(date.date)"
+    >
       <ion-label>
         {{ date.date }}
-        <span *ngIf="date.classTime">
-          - {{ date.classTime | date: '' }}
-        </span>
+        <span *ngIf="date.classTime"> - {{ date.classTime | date: '' }} </span>
       </ion-label>
     </ion-item>
   </ion-list>
@@ -66,12 +75,26 @@
   <!-- Estudiantes para la fecha seleccionada -->
   <ion-list *ngIf="selectedDate">
     <ion-item *ngFor="let student of studentsForDate">
-      <ion-label>{{ student.nombre }} {{ student.apellido }} ({{ student.email }})</ion-label>
+      <ion-label
+        >{{ student.nombre }} {{ student.apellido }} ({{ student.email
+        }})</ion-label
+      >
     </ion-item>
   </ion-list>
 
-  <ion-button expand="full" color="primary" routerLink="/scanner" class="bottom-button">
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button
+    expand="full"
+    color="primary"
+    routerLink="/scanner"
+    class="bottom-button"
+  >
     <ion-icon name="qr-code-outline"></ion-icon>
     <ion-label>Mostrar QR</ion-label>
   </ion-button>
-</ion-content>
+  </ion-toolbar>
+</ion-footer>
+
